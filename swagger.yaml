@@ -1,0 +1,295 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Docker-compose dashboard
+  termsOfService: 'http://swagger.io/terms/'
+host: 'localhost:5000'
+basePath: /v2
+tags:
+  - name: docker-project
+    description: API
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+schemes:
+  - http
+paths:
+  /get-all:
+    get:
+      tags:
+        - dockerps
+      summary: Get projects
+      description: Return docker ps and its specs
+      operationId: getAll
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ListOfContainers'
+        '400':
+          description: Invalid status value
+  /environment:
+    get:
+      summary: x
+      description: x
+      responses:
+        '200':
+          description: x
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Environment'
+  '/environment/{id}':
+    get:
+      tags:
+        - container
+      operationId: environmentGet
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected container
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Environment'
+        '404':
+          description: A container with the specified ID was not found.
+    delete:
+      tags:
+        - container
+      operationId: environmentDelete
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected container
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+  '/environment/{id}/stop':
+    post:
+      tags:
+        - container
+      operationId: environmentStop
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected container
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+  '/environment/{id}/start':
+    post:
+      tags:
+        - container
+      operationId: environmentStart
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected container
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+  '/environment/{id}/restart':
+    post:
+      tags:
+        - container
+      operationId: environmentRestart
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected container
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+  '/instance/{id}':
+    get:
+      tags:
+        - container
+      operationId: instanceGet
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected container
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/InstanceExt'
+        '404':
+          description: A container with the specified ID was not found.
+    delete:
+      tags:
+        - container
+      operationId: instanceDelete
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected container
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+  '/instance/{id}/stop':
+    post:
+      tags:
+        - container
+      operationId: instanceStop
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected container
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+  '/instance/{id}/start':
+    post:
+      tags:
+        - container
+      operationId: instanceStart
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected container
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+  '/instance/{id}/restart':
+    post:
+      tags:
+        - container
+      operationId: instanceRestart
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected container
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+definitions:
+  ListOfContainers:
+    type: object
+    properties:
+      environments:
+        type: array
+        items:
+          $ref: '#/definitions/Environment'
+      others:
+        type: array
+        items:
+          $ref: '#/definitions/Instance'
+  Environment:
+    type: object
+    properties:
+      services:
+        type: array
+        items:
+          $ref: '#/definitions/Instance'
+  Instance:
+    type: object
+    properties:
+      id:
+        type: string
+      path:
+        type: string
+      args:
+        type: array
+        items:
+          type: string
+      image:
+        type: string
+      name:
+        type: string
+  InstanceExt:
+    allOf:
+      - $ref: '#/definitions/Instance'
+      - properties:
+          hostname:
+            type: string
+          domainname:
+            type: string
+          user:
+            type: string
+          attachStdin:
+            type: boolean
+          attachStdout:
+            type: boolean
+          attchaStderr:
+            type: boolean
+          exposedPorts:
+            type: object
+            additionalProperties:
+              type: object
+          volumes:
+            type: object
+            additionalProperties:
+              type: object
+          tty:
+            type: boolean
+          openStdin:
+            type: boolean
+          stdinOnce:
+            type: boolean
+          env:
+            type: array
+            items:
+              type: string
+          cmd:
+            type: array
+            items:
+              type: string
+          argsEscaped:
+            type: boolean
+          image:
+            type: string
+          workingDir:
+            type: string
+          entrypoint:
+            type: string
+          onBuild:
+            type: string
+          labels:
+            type: object
+            additionalProperties:
+              type: string
