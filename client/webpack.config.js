@@ -17,7 +17,7 @@ console.log('SRC_DIR', SRC_DIR);
 module.exports = {
     devtool: 'source-map',
     entry: {
-        index: [SRC_DIR + '/rootReducerPrdel.js']
+        index: [SRC_DIR + '/index.js']
     },
     output: {
         path: BUILD_DIR,
@@ -33,7 +33,7 @@ module.exports = {
     },
     module: {
         rules: [
-            {
+            /*{
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: {
@@ -43,12 +43,12 @@ module.exports = {
                         presets: ['react', 'env']
                     }
                 }
-            },
-            /*{
+            },*/
+            {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 loaders: [ 'happypack/loader?id=jsx' ]
-            },*/
+            },
             {
                 test: /\.html$/,
                 loader: 'html-loader'

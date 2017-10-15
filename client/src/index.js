@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 import {HashRouter, Route, Switch} from 'react-router-dom';
 import {createBrowserHistory} from 'history';
 import {Provider} from 'react-redux';
-//import app from './reducers/app';
-//import store from './store';
+import store from './store';
 
 
 // Styles
@@ -21,7 +20,7 @@ import Full from './containers/Full/'
 const history = createBrowserHistory();
 
 ReactDOM.render((
-    <Provider>
+    <Provider store={store}>
         <HashRouter history={history}>
             <Switch>
                 <Route path="/" name="Home" component={Full}/>
