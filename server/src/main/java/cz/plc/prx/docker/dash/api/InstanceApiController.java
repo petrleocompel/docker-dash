@@ -2,8 +2,10 @@ package cz.plc.prx.docker.dash.api;
 
 import cz.plc.prx.docker.dash.model.InstanceExt;
 
+import cz.plc.prx.docker.dash.service.DockerConnectionService;
 import io.swagger.annotations.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class InstanceApiController implements InstanceApi {
 
+    @Autowired
+    DockerConnectionService docker;
 
 
     public ResponseEntity<Void> instanceDelete(@ApiParam(value = "name of selected container",required=true ) @PathVariable("id") String id) {
@@ -27,17 +31,17 @@ public class InstanceApiController implements InstanceApi {
     }
 
     public ResponseEntity<Void> instanceRestart(@ApiParam(value = "name of selected container",required=true ) @PathVariable("id") String id) {
-        // do some magic!
+        docker.getDefaultConnection().restartContainerCmd(id).exec();
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     public ResponseEntity<Void> instanceStart(@ApiParam(value = "name of selected container",required=true ) @PathVariable("id") String id) {
-        // do some magic!
+        docker.getDefaultConnection().startContainerCmd(id).exec();
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     public ResponseEntity<Void> instanceStop(@ApiParam(value = "name of selected container",required=true ) @PathVariable("id") String id) {
-        // do some magic!
+        docker.getDefaultConnection().stopContainerCmd(id).exec();
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 

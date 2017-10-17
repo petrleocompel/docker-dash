@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-@ComponentScan(basePackages = { "io.swagger", "cz.plc.prx.docker.dash.api"})
+@ComponentScan(basePackages = { "io.swagger", "cz.plc.prx.docker.dash"})
 public class DockerDashApp implements CommandLineRunner {
 
     @Override
