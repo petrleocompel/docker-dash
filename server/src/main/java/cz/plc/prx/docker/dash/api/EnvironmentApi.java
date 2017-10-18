@@ -10,73 +10,80 @@ import cz.plc.prx.docker.dash.model.Environment;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-10-10T07:43:14.863Z")
+import javax.validation.constraints.*;
+import javax.validation.Valid;
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-10-12T16:13:23.987Z")
 
 @Api(value = "environment", description = "the environment API")
 public interface EnvironmentApi {
 
-    @ApiOperation(value = "", notes = "", response = Void.class, tags={ "container", })
+    @ApiOperation(value = "Delete a service selected by its ID", notes = "", response = Void.class, tags={ "Environment", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Void.class) })
+        @ApiResponse(code = 200, message = "successful operation", response = Void.class),
+        @ApiResponse(code = 404, message = "A container with the specified Environment ID was not found.", response = Void.class) })
     
     @RequestMapping(value = "/environment/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> environmentDelete(@ApiParam(value = "name of selected container",required=true ) @PathVariable("id") String id);
+    ResponseEntity<Void> environmentDelete(@ApiParam(value = "name of selected Environment",required=true ) @PathVariable("id") String id);
 
 
-    @ApiOperation(value = "x", notes = "x", response = Environment.class, responseContainer = "List", tags={  })
+    @ApiOperation(value = "Get the services of the group named Environment", notes = "Returns array of containers", response = Environment.class, responseContainer = "List", tags={ "Environment", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "x", response = Environment.class, responseContainer = "List") })
+        @ApiResponse(code = 200, message = "Successful operation", response = Environment.class, responseContainer = "List") })
     
     @RequestMapping(value = "/environment",
         method = RequestMethod.GET)
     ResponseEntity<List<Environment>> environmentGet();
 
 
-    @ApiOperation(value = "", notes = "", response = Environment.class, tags={ "container", })
+    @ApiOperation(value = "Get a service selected  by its ID", notes = "", response = Environment.class, tags={ "Environment", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Environment.class),
-        @ApiResponse(code = 404, message = "A container with the specified ID was not found.", response = Void.class) })
+        @ApiResponse(code = 404, message = "A container with the specified Environment ID was not found.", response = Void.class) })
     
     @RequestMapping(value = "/environment/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Environment> environmentGet(@ApiParam(value = "name of selected container",required=true ) @PathVariable("id") String id);
+    ResponseEntity<Environment> environmentGet(@ApiParam(value = "name of selected Environment",required=true ) @PathVariable("id") String id);
 
 
-    @ApiOperation(value = "", notes = "", response = Void.class, tags={ "container", })
+    @ApiOperation(value = "Restart a service selected by its ID", notes = "", response = Void.class, tags={ "Environment", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Void.class) })
     
     @RequestMapping(value = "/environment/{id}/restart",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<Void> environmentRestart(@ApiParam(value = "name of selected container",required=true ) @PathVariable("id") String id);
+    ResponseEntity<Void> environmentRestart(@ApiParam(value = "name of selected Environment",required=true ) @PathVariable("id") String id);
 
 
-    @ApiOperation(value = "", notes = "", response = Void.class, tags={ "container", })
+    @ApiOperation(value = "Start a service selected by its ID", notes = "", response = Void.class, tags={ "Environment", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Void.class) })
     
     @RequestMapping(value = "/environment/{id}/start",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<Void> environmentStart(@ApiParam(value = "name of selected container",required=true ) @PathVariable("id") String id);
+    ResponseEntity<Void> environmentStart(@ApiParam(value = "name of selected Environment",required=true ) @PathVariable("id") String id);
 
 
-    @ApiOperation(value = "", notes = "", response = Void.class, tags={ "container", })
+    @ApiOperation(value = "Stop a service selected by its ID", notes = "", response = Void.class, tags={ "Environment", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Void.class) })
     
     @RequestMapping(value = "/environment/{id}/stop",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<Void> environmentStop(@ApiParam(value = "name of selected container",required=true ) @PathVariable("id") String id);
+    ResponseEntity<Void> environmentStop(@ApiParam(value = "name of selected Environment",required=true ) @PathVariable("id") String id);
 
 }

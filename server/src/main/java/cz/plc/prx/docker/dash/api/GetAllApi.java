@@ -5,26 +5,36 @@
  */
 package cz.plc.prx.docker.dash.api;
 
+import cz.plc.prx.docker.dash.model.Groups;
 import cz.plc.prx.docker.dash.model.ListOfContainers;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-10-10T07:43:14.863Z")
+import java.util.List;
+import javax.validation.constraints.*;
+import javax.validation.Valid;
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-10-12T16:13:23.987Z")
 
 @Api(value = "get-all", description = "the get-all API")
 public interface GetAllApi {
 
-    @ApiOperation(value = "Get projects", notes = "Return docker ps and its specs", response = ListOfContainers.class, tags={ "dockerps", })
+    @ApiOperation(value = "Get all groups", notes = "Return docker groups and its content such as group named environments containing services", response = Groups.class, tags={ "Docker", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = ListOfContainers.class),
+        @ApiResponse(code = 200, message = "successful operation", response = Groups.class),
         @ApiResponse(code = 400, message = "Invalid status value", response = Void.class) })
     
     @RequestMapping(value = "/get-all",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<ListOfContainers> getAll();
+    ResponseEntity<Groups> getAll();
 
 }

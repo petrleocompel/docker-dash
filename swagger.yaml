@@ -1,25 +1,36 @@
 swagger: '2.0'
 info:
+  description: Project created in order to simplify work with docker in GUI.
   version: 1.0.0
-  title: Docker-compose dashboard
+  title: Docker dashboard
+  contact:
+    name: Docker dash team
+    url: 'https://github.com/petrleocompel/docker-dash/issues'
   termsOfService: 'http://swagger.io/terms/'
 host: 'localhost:5000'
-basePath: /v2
+basePath: /api
 tags:
-  - name: docker-project
-    description: API
+  - name: Read more on
+    description: Manual/Api
     externalDocs:
       description: Find out more
-      url: 'http://swagger.io'
+      url: 'https://github.com/petrleocompel/docker-dash/blob/master/README.md'
+  - name: docker-dash
+    description: Website
+    externalDocs:
+      description: Find out more
+      url: 'https://github.com/petrleocompel/docker-dash'
 schemes:
   - http
 paths:
   /get-all:
     get:
       tags:
-        - dockerps
-      summary: Get projects
-      description: Return docker ps and its specs
+        - Docker
+      summary: Get all groups
+      description: >-
+        Return docker groups and its content such as group named environments
+        containing services
       operationId: getAll
       produces:
         - application/json
@@ -27,16 +38,18 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/ListOfContainers'
+            $ref: '#/definitions/Groups'
         '400':
           description: Invalid status value
   /environment:
     get:
-      summary: x
-      description: x
+      tags:
+        - Environment
+      summary: Get the services of the group named Environment
+      description: Returns array of containers
       responses:
         '200':
-          description: x
+          description: Successful operation
           schema:
             type: array
             items:
@@ -44,14 +57,16 @@ paths:
   '/environment/{id}':
     get:
       tags:
-        - container
+        - Environment
+      summary: Get a service selected  by its ID
+      description: ''
       operationId: environmentGet
       produces:
         - application/json
       parameters:
         - in: path
           name: id
-          description: name of selected container
+          description: name of selected Environment
           required: true
           type: string
       responses:
@@ -60,33 +75,39 @@ paths:
           schema:
             $ref: '#/definitions/Environment'
         '404':
-          description: A container with the specified ID was not found.
+          description: A container with the specified Environment ID was not found.
     delete:
       tags:
-        - container
+        - Environment
+      summary: Delete a service selected by its ID
+      description: ''
       operationId: environmentDelete
       produces:
         - application/json
       parameters:
         - in: path
           name: id
-          description: name of selected container
+          description: name of selected Environment
           required: true
           type: string
       responses:
         '200':
           description: successful operation
+        '404':
+          description: A container with the specified Environment ID was not found.
   '/environment/{id}/stop':
     post:
       tags:
-        - container
+        - Environment
+      summary: Stop a service selected by its ID
+      description: ''
       operationId: environmentStop
       produces:
         - application/json
       parameters:
         - in: path
           name: id
-          description: name of selected container
+          description: name of selected Environment
           required: true
           type: string
       responses:
@@ -95,14 +116,16 @@ paths:
   '/environment/{id}/start':
     post:
       tags:
-        - container
+        - Environment
+      summary: Start a service selected by its ID
+      description: ''
       operationId: environmentStart
       produces:
         - application/json
       parameters:
         - in: path
           name: id
-          description: name of selected container
+          description: name of selected Environment
           required: true
           type: string
       responses:
@@ -111,14 +134,16 @@ paths:
   '/environment/{id}/restart':
     post:
       tags:
-        - container
+        - Environment
+      summary: Restart a service selected by its ID
+      description: ''
       operationId: environmentRestart
       produces:
         - application/json
       parameters:
         - in: path
           name: id
-          description: name of selected container
+          description: name of selected Environment
           required: true
           type: string
       responses:
@@ -127,14 +152,16 @@ paths:
   '/instance/{id}':
     get:
       tags:
-        - container
+        - Instance
+      summary: Get an instance selected by its ID
+      description: ''
       operationId: instanceGet
       produces:
         - application/json
       parameters:
         - in: path
           name: id
-          description: name of selected container
+          description: name of selected Instance
           required: true
           type: string
       responses:
@@ -143,17 +170,19 @@ paths:
           schema:
             $ref: '#/definitions/InstanceExt'
         '404':
-          description: A container with the specified ID was not found.
+          description: A container with the specified Instance ID was not found.
     delete:
       tags:
-        - container
+        - Instance
+      summary: Delete selected instance by its ID
+      description: ''
       operationId: instanceDelete
       produces:
         - application/json
       parameters:
         - in: path
           name: id
-          description: name of selected container
+          description: name of selected Instance
           required: true
           type: string
       responses:
@@ -162,7 +191,9 @@ paths:
   '/instance/{id}/stop':
     post:
       tags:
-        - container
+        - Instance
+      summary: Stop an instance selected by its ID
+      description: ''
       operationId: instanceStop
       produces:
         - application/json
@@ -178,7 +209,9 @@ paths:
   '/instance/{id}/start':
     post:
       tags:
-        - container
+        - Instance
+      summary: Start an instance selected by its ID
+      description: ''
       operationId: instanceStart
       produces:
         - application/json
@@ -194,7 +227,9 @@ paths:
   '/instance/{id}/restart':
     post:
       tags:
-        - container
+        - Instance
+      summary: Restart an instance selected by its ID
+      description: ''
       operationId: instanceRestart
       produces:
         - application/json
@@ -208,7 +243,7 @@ paths:
         '200':
           description: successful operation
 definitions:
-  ListOfContainers:
+  Groups:
     type: object
     properties:
       environments:

@@ -17,11 +17,11 @@ public class SwaggerDocumentationConfig {
 
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("Docker dash")
-            .description("Docker dash")
+            .title("Docker dashboard")
+            .description("Project created in order to simplify work with docker in GUI.")
             .license("")
             .licenseUrl("http://unlicense.org")
-            .termsOfServiceUrl("")
+            .termsOfServiceUrl("https://github.com/petrleocompel/docker-dash/issues")
             .version("1.0.0")
             .contact(new Contact("","", ""))
             .build();

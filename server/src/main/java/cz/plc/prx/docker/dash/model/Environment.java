@@ -1,12 +1,12 @@
 package cz.plc.prx.docker.dash.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.Valid;
+import java.util.Objects;
 
 /**
  * Environment

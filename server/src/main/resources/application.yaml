@@ -1,7 +1,7 @@
 springfox.documentation.swagger.v2.path: /api-docs
 
 server:
-  contextPath: /v2
+  contextPath: /api
   port: 5000
 spring.jackson:
   date-format: cz.plc.prx.docker.dash.RFC3339DateFormat
