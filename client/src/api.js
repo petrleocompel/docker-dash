@@ -7,15 +7,18 @@ export function responsr(fetchCallback) {
     if (mock === true) {
         return new Promise((resolve)=>{return resolve(fetchCallback.mock)});
     }
-    fetchCallback.fetch.then(function (response) {
+    return fetchCallback.fetch.then(function (response) {
         if (response.ok) {
             return response.json();
         }
 
-        throw new Error('Chyba zpracovani TODO');
+
+        return response.json().then((error) => {console.log(error);return Promise.reject()});
+
 
     }).catch(function (error) {
         console.log(error);
+        return Promise.reject();
     })
 }
 
@@ -30,4 +33,23 @@ export function mockGetAll() {
         {id: 1, name: 'PUBG_server', mountpoint: "URL TODO" },
         {id: 2, name: 'Minecraft_server', mountpoint: "URL TODO"},
         {id: 3, name: 'Dota_server', mountpoint: "URL TODO" }];
+}
+
+export function enviroment() {
+    return {fetch: fetch(basePath + "environment"), mock: [
+        {
+            "services": [
+                {
+                    "id": "string",
+                    "path": "string",
+                    "args": [
+                        "string"
+                    ],
+                    "image": "string",
+                    "name": "string"
+                }
+            ]
+        }
+    ]};
+    
 }

@@ -42,13 +42,13 @@ class Dashboard extends Component {
                 </thead>
                 <tbody>
                 {this.state.images.map((item, index) => {
-                    return <tr>
+                    return <tr key={index}>
                         <td>{item.id}</td>
                         <td>{item.name}</td>
                         <td>{item.mountpoint}</td>
                         <td> <div>
-                            <Button outline color="info" onClick={this.handleList}>List</Button>{' '}
-                            <Button outline color="success" onClick={this.handleStart}>Start</Button>{' '}
+                            <Button outline color="info" onClick={() => this.handleList(item.id)}>List</Button>{' '}
+                            <Button outline color="success" onClick={() => this.handleStart(item.id)}>Start</Button>{' '}
                             <Button outline color="danger" onClick={this.handleStop}>Stop</Button>{' '}
                             <Button outline color="warning" onClick={this.handleRestart}>Restart</Button>{' '}
                         </div></td>
