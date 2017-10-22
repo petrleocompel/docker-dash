@@ -1,6 +1,6 @@
 const serverURL = "http://localhost:5000";
-const basePath = serverURL + "/v2/";
-const mock = true;
+const basePath = serverURL + "/api/";
+const mock = false;
 
 
 export function responsr(fetchCallback) {

@@ -10,8 +10,7 @@ class Dashboard extends Component {
 
     componentDidMount() {
         responsr(getAll()).then((data) => {
-            this.setState({images: data});
-
+            this.setState({images: data.others});
         })
     }
 
