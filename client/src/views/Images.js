@@ -15,6 +15,15 @@ class Images extends Component {
         })
     }
 
+    handleStart = (id) =>{alert('Process started TODO')};
+
+    handleStop = (id) =>{alert('Process stopped TODO')};
+
+    handleRestart = (id) =>{alert('Restarting .... TODO')};
+
+    handleList = (id) =>{alert('Listing item TODO')};
+
+
     render() {
         if (!this.state.images) {
             return <Loader/>
@@ -38,10 +47,10 @@ class Images extends Component {
                         <td>{item.name}</td>
                         <td>{item.mountpoint}</td>
                         <td> <div>
-                            <Button outline color="info">List</Button>{' '}
-                            <Button outline color="success">Start</Button>{' '}
-                            <Button outline color="danger">Stop</Button>{' '}
-                            <Button outline color="warning">Restart</Button>{' '}
+                            <Button outline color="info" onClick={this.handleList}>List</Button>{' '}
+                            <Button outline color="success" onClick={this.handleStart}>Start</Button>{' '}
+                            <Button outline color="danger" onClick={this.handleStop}>Stop</Button>{' '}
+                            <Button outline color="warning" onClick={this.handleRestart}>Restart</Button>{' '}
                         </div></td>
                     </tr>
                 })}
