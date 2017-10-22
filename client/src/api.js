@@ -24,7 +24,7 @@ export function responsr(fetchCallback) {
 
 
 export function getAll() {
-    return {fetch: fetch(basePath + "get-all"), mock: mockGetAll()};
+    return {fetch: fetch(basePath + "get-all")};
 
 }
 
@@ -35,21 +35,46 @@ export function mockGetAll() {
         {id: 3, name: 'Dota_server', mountpoint: "URL TODO" }];
 }
 
-export function enviroment() {
-    return {fetch: fetch(basePath + "environment"), mock: [
-        {
-            "services": [
-                {
-                    "id": "string",
-                    "path": "string",
-                    "args": [
-                        "string"
-                    ],
-                    "image": "string",
-                    "name": "string"
-                }
-            ]
-        }
-    ]};
-    
+export function environment() {
+    return {fetch: fetch(basePath + "environment")}
 }
+
+export function environment(id){
+    return {fetch: fetch(basePath + "environment/" + id)}
+}
+
+export function environmentDelete(id){
+    return {fetch: fetch(basePath + "environment/" + id, {method: 'DELETE'})}
+}
+
+export function environmentStop(id){
+    return {fetch: fetch(basePath + "environment/" + id + "/stop", {method: 'POST'})}
+}
+
+export function environmentStart(id){
+    return {fetch: fetch(basePath + "environment/" + id + "/start", {method: 'POST'})}
+}
+
+export function envirnmentRestart(id){
+    return {fetch: fetch(basePath + "environment/" + id + "/restart", {method: 'POST'})}
+}
+
+export function instance(id){
+    return {fetch: fetch(basePath + "instance/" + id)}
+}
+export function instanceDelete(id){
+    return {fetch: fetch(basePath + "instance/" + id, {method: 'DELETE'})}
+}
+
+export function instanceStop(id){
+    return {fetch: fetch(basePath + "instance/" + id + "/stop", {method: 'POST'})}
+}
+
+export function instanceStart(id){
+    return {fetch: fetch(basePath + "instance/" + id + "/start", {method: 'POST'})}
+}
+
+export function instanceRestart(id){
+    return {fetch: fetch(basePath + "instance/" + id + "/restart", {method: 'POST'})}
+}
+
