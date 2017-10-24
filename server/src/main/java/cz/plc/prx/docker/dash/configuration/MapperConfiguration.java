@@ -1,7 +1,10 @@
 package cz.plc.prx.docker.dash.configuration;
 
 import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.ContainerConfig;
+import cz.plc.prx.docker.dash.model.ContainerConf;
 import cz.plc.prx.docker.dash.model.Instance;
+import cz.plc.prx.docker.dash.model.InstanceExt;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
@@ -32,6 +35,7 @@ public class MapperConfiguration {
         return mapperFactory;
     }
 
+
     private void initCustom(final MapperFactory mapperFactory) {
         mapperFactory.classMap(Container.class, Instance.class)
                 .byDefault()
@@ -45,5 +49,40 @@ public class MapperConfiguration {
                     }
                 })
                 .register();
+
+        mapperFactory.classMap(Container.class, InstanceExt.class)
+                .byDefault()
+                .customize(new CustomMapper<Container, InstanceExt>() {
+                    @Override
+                    public void mapAtoB(Container container, InstanceExt instanceExt, MappingContext context) {
+                        super.mapAtoB(container, instanceExt, context);
+                        if (container.getNames() != null && container.getNames().length > 0) {
+                            instanceExt.setName(container.getNames()[0]);
+                        }
+                    }
+                })
+                .register();
+        mapperFactory.classMap(ContainerConfig.class, ContainerConf.class)
+                .byDefault()
+                .customize(new CustomMapper<ContainerConfig, ContainerConf>() {
+                    @Override
+                    public void mapAtoB(ContainerConfig conf, ContainerConf configuration, MappingContext context) {
+                        super.mapAtoB(conf, configuration, context);
+                        if (conf.getCmd() != null) {
+                            configuration.setCmd(conf.getCmd());
+                        }
+                        if (conf.getAttachStderr() != null) {
+                            configuration.setAttachStderr(conf.getAttachStderr());
+                        }
+                        if (conf.getAttachStdin() != null) {
+                            configuration.setAttachStdin(conf.getAttachStdin());
+                        }
+                        if (conf.getAttachStdout() != null) {
+                            configuration.setAttachStdout(conf.getAttachStdout());
+                        }
+                    }
+                })
+                .register();
     }
+
 }

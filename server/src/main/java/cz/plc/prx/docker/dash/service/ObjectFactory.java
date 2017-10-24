@@ -24,7 +24,7 @@ public class ObjectFactory {
      * @param <O>   Generic class of output
      * @return converted object
      */
-    public <I, O> O convert(final I vo, Class<O> clazz) {
+    public <I, O> O list(final I vo, Class<O> clazz) {
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.map(vo, clazz);
     }
@@ -39,7 +39,7 @@ public class ObjectFactory {
      * @param <O>   Generic class of output
      * @return converted object
      */
-    public <I, O> List<O> create(final Iterable<I> vos, Class<O> clazz) {
+    public <I, O> List<O> convert(final Iterable<I> vos, Class<O> clazz) {
         MapperFacade mapper = mapperFactory.getMapperFacade();
         return mapper.mapAsList(vos, clazz);
     }
