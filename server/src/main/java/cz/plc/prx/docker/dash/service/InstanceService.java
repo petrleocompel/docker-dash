@@ -29,17 +29,12 @@ public class InstanceService {
         return objectFactory.convert(containerList, Instance.class);
     }
 
-    public List<InstanceExt>getByID(String Id) {
-        List<InspectContainerResponse> instanceList= new ArrayList<InspectContainerResponse>();
+    public List<InstanceExt> getByID(String Id) {
+        List<InspectContainerResponse> instanceList = new ArrayList<InspectContainerResponse>();
         InspectContainerResponse exec = dcService.getDefaultConnection().inspectContainerCmd(Id).exec();
-
         instanceList.add(exec);
-        System.out.println(Arrays.asList(instanceList.get(0).getConfig().getCmd()));
-
-        List<InstanceExt>obj=objectFactory.convert(instanceList, InstanceExt.class);
-        ContainerConf vv=objectFactory.list(instanceList.get(0).getConfig(), ContainerConf.class);
-        obj.get(0).setConfig(vv);
-        System.out.println(obj.get(0));
+        List<InstanceExt> obj = objectFactory.convert(instanceList, InstanceExt.class);
+        obj.get(0).setConfig(objectFactory.list(instanceList.get(0).getConfig(), ContainerConf.class));
         return obj;
     }
 }

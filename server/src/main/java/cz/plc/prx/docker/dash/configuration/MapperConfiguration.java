@@ -1,10 +1,12 @@
 package cz.plc.prx.docker.dash.configuration;
 
+import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.ContainerConfig;
 import cz.plc.prx.docker.dash.model.ContainerConf;
 import cz.plc.prx.docker.dash.model.Instance;
 import cz.plc.prx.docker.dash.model.InstanceExt;
+import cz.plc.prx.docker.dash.model.Mount;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
@@ -57,6 +59,7 @@ public class MapperConfiguration {
                     public void mapAtoB(Container container, InstanceExt instanceExt, MappingContext context) {
                         super.mapAtoB(container, instanceExt, context);
                         if (container.getNames() != null && container.getNames().length > 0) {
+                            System.out.println(container.getNames());
                             instanceExt.setName(container.getNames()[0]);
                         }
                     }
@@ -71,14 +74,18 @@ public class MapperConfiguration {
                         if (conf.getCmd() != null) {
                             configuration.setCmd(conf.getCmd());
                         }
-                        if (conf.getAttachStderr() != null) {
-                            configuration.setAttachStderr(conf.getAttachStderr());
-                        }
-                        if (conf.getAttachStdin() != null) {
-                            configuration.setAttachStdin(conf.getAttachStdin());
-                        }
-                        if (conf.getAttachStdout() != null) {
-                            configuration.setAttachStdout(conf.getAttachStdout());
+                    }
+                })
+                .register();
+
+        mapperFactory.classMap(InspectContainerResponse.Mount.class, Mount.class)
+                .byDefault()
+                .customize(new CustomMapper<InspectContainerResponse.Mount, Mount>() {
+                    @Override
+                    public void mapAtoB(InspectContainerResponse.Mount model, Mount mount, MappingContext context) {
+                        super.mapAtoB(model, mount, context);
+                        if (model.getName() != null) {
+                            mount.setName(model.getName());
                         }
                     }
                 })

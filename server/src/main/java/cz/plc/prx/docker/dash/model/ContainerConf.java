@@ -13,6 +13,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Used as part of 'images/IMAGE/someimage' response.
@@ -22,14 +23,34 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 public class ContainerConf {
+
     @JsonProperty("AttachStderr")
     private Boolean attachStderr;
+
+    @JsonProperty("AttachStdin")
+    private Boolean attachStdin;
+
+    @JsonProperty("AttachStdout")
+    private Boolean attachStdout;
 
     @JsonProperty("Cmd")
     private String[] cmd;
 
-    @JsonProperty("AttachStdin")
-    private Boolean attachStdin;
+    @JsonProperty("Entrypoint")
+    private String[] entrypoint;
+
+    @JsonProperty("Env")
+    private String[] env;
+
+    @JsonProperty("Hostname")
+    private String hostName;
+
+    @JsonProperty("Labels")
+    private Map<String, String> labels;
+
+    @JsonProperty("WorkingDir")
+    private String workingDir;
+
 
     public Boolean getAttachStderr() {
         return attachStderr;
@@ -55,8 +76,6 @@ public class ContainerConf {
         this.attachStdout = attachStdout;
     }
 
-    @JsonProperty("AttachStdout")
-    private Boolean attachStdout;
 
     public String[] getCmd() {
         return cmd;
@@ -65,19 +84,54 @@ public class ContainerConf {
     public void setCmd(String[] cmd) {
         this.cmd = cmd;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ContainerConf containerConf = (ContainerConf) o;
+        return Objects.equals(this.attachStderr, containerConf.attachStderr) &&
+                Objects.equals(this.attachStdin, containerConf.attachStdin) &&
+                Objects.equals(this.attachStdout, containerConf.attachStdout) &&
+                Objects.equals(this.cmd, containerConf.cmd) &&
+                Objects.equals(this.entrypoint, containerConf.entrypoint) &&
+                Objects.equals(this.env, containerConf.env) &&
+                Objects.equals(this.hostName, containerConf.hostName) &&
+                Objects.equals(this.labels, containerConf.labels) &&
+                Objects.equals(this.workingDir, containerConf.workingDir);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(attachStderr, attachStdin, attachStdout, cmd, entrypoint, env, hostName, labels, workingDir);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class ContainerConf {\n");
 
-        sb.append("    cmd: ").append(toIndentedString(Arrays.asList(cmd))).append("\n");
         sb.append("    attachStderr: ").append(toIndentedString(attachStderr)).append("\n");
         sb.append("    attachStdin: ").append(toIndentedString(attachStdin)).append("\n");
         sb.append("    attachStdout: ").append(toIndentedString(attachStdout)).append("\n");
-
+        sb.append("    cmd: ").append(toIndentedString(cmd)).append("\n");
+        sb.append("    entrypoint: ").append(toIndentedString(entrypoint)).append("\n");
+        sb.append("    env: ").append(toIndentedString(env)).append("\n");
+        sb.append("    hostname: ").append(toIndentedString(hostName)).append("\n");
+        sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
+        sb.append("    workingDir: ").append(toIndentedString(workingDir)).append("\n");
         sb.append("}");
         return sb.toString();
     }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
     private String toIndentedString(java.lang.Object o) {
         if (o == null) {
             return "null";
@@ -85,435 +139,47 @@ public class ContainerConf {
         return o.toString().replace("\n", "\n    ");
     }
 
-/*
-
-    @JsonProperty("AttachStderr")
-    private Boolean attachStderr;
-
-    @JsonProperty("AttachStdin")
-    private Boolean attachStdin;
-
-    @JsonProperty("AttachStdout")
-    private Boolean attachStdout;
-
-    @JsonProperty("Cmd")
-    private String[] cmd;
-
-    @JsonProperty("Domainname")
-    private String domainName;
-
-    @JsonProperty("Entrypoint")
-    private String[] entrypoint;
-
-    @JsonProperty("Env")
-    private String[] env;
-
-    */
-/*@JsonProperty("ExposedPorts")
-    private ExposedPorts exposedPorts;*//*
-
-
-    @JsonProperty("Hostname")
-    private String hostName;
-
-    @JsonProperty("Image")
-    private String image;
-
-    @JsonProperty("Labels")
-    private Map<String, String> labels;
-
-    @JsonProperty("MacAddress")
-    private String macAddress;
-
-    @JsonProperty("NetworkDisabled")
-    private Boolean networkDisabled;
-
-    @JsonProperty("OnBuild")
-    private String[] onBuild;
-
-    @JsonProperty("OpenStdin")
-    private Boolean stdinOpen;
-
-    @JsonProperty("PortSpecs")
-    private String[] portSpecs;
-
-    @JsonProperty("StdinOnce")
-    private Boolean stdInOnce;
-
-    @JsonProperty("Tty")
-    private Boolean tty;
-
-    @JsonProperty("User")
-    private String user;
-
-    @JsonProperty("Volumes")
-    private Map<String, ?> volumes;
-
-    @JsonProperty("WorkingDir")
-    private String workingDir;
-
-    */
-/*@JsonProperty("Healthcheck")
-    private HealthCheck healthCheck;*//*
-
-
-    */
-/*@JsonIgnore
-    public ExposedPort[] getExposedPorts() {
-        return exposedPorts != null ? exposedPorts.getExposedPorts() : null;
-    }
-*//*
-
-    */
-/**
-     * @see #attachStderr
-     *//*
-
-
-    public Boolean getAttachStderr() {
-        return attachStderr;
+    public String[] getEnv() {
+        return env;
     }
 
-    */
-/**
-     * @see #attachStderr
-     *//*
-
-
-    */
-/**
-     * @see #attachStdin
-     *//*
-
-
-    public Boolean getAttachStdin() {
-        return attachStdin;
+    public void setEnv(String[] env) {
+        this.env = env;
     }
-
-    */
-/**
-     * @see #attachStdin
-     *//*
-
-
-    */
-/**
-     * @see #attachStdout
-     *//*
-
-
-    public Boolean getAttachStdout() {
-        return attachStdout;
-    }
-
-    */
-/**
-     * @see #attachStdout
-     *//*
-
-    */
-/**
-     * @see #cmd
-     *//*
-
-
-    public String[] getCmd() {
-        return cmd;
-    }
-
-    */
-/**
-     * @see #cmd
-     *//*
-
-
-    */
-/**
-     * @see #domainName
-     *//*
-
-
-    public String getDomainName() {
-        return domainName;
-    }
-
-    */
-/**
-     * @see #domainName
-     *//*
-
-
-    */
-/**
-     * @see #entrypoint
-     *//*
-
 
     public String[] getEntrypoint() {
         return entrypoint;
     }
 
-    */
-/**
-     * @see #entrypoint
-     *//*
-
-
-    */
-/**
-     * @see #env
-     *//*
-
-
-    public String[] getEnv() {
-        return env;
+    public void setEntrypoint(String[] entrypoint) {
+        this.entrypoint = entrypoint;
     }
-
-    */
-/**
-     * @see #env
-     *//*
-
-
-    */
-/**
-     * @see #exposedPorts
-     *//*
-
-
-    */
-/**
-     * @see #hostName
-     *//*
-
-
-    public String getHostName() {
-        return hostName;
-    }
-
-    */
-/**
-     * @see #hostName
-     *//*
-
-
-    */
-/**
-     * @see #image
-     *//*
-
-
-    public String getImage() {
-        return image;
-    }
-
-    */
-/**
-     * @see #image
-     *//*
-
-
-    */
-/**
-     * @see #labels
-     *//*
-
-
-    public Map<String, String> getLabels() {
-        return labels;
-    }
-
-    */
-/**
-     * @see #labels
-     *//*
-
-
-    */
-/**
-     * @see #macAddress
-     *//*
-
-
-    public String getMacAddress() {
-        return macAddress;
-    }
-
-    */
-/**
-     * @see #macAddress
-     *//*
-
-
-    */
-/**
-     * @see #networkDisabled
-     *//*
-
-
-    public Boolean getNetworkDisabled() {
-        return networkDisabled;
-    }
-
-    */
-/**
-     * @see #networkDisabled
-     *//*
-
-
-    */
-/**
-     * @see #onBuild
-     *//*
-
-
-    public String[] getOnBuild() {
-        return onBuild;
-    }
-
-    */
-/**
-     * @see #onBuild
-     *//*
-
-
-    */
-/**
-     * @see #portSpecs
-     *//*
-
-
-    public String[] getPortSpecs() {
-        return portSpecs;
-    }
-
-    */
-/**
-     * @see #portSpecs
-     *//*
-
-
-    */
-/**
-     * @see #stdInOnce
-     *//*
-
-
-    public Boolean getStdInOnce() {
-        return stdInOnce;
-    }
-
-    */
-/**
-     * @see #stdInOnce
-     *//*
-
-
-    */
-/**
-     * @see #stdinOpen
-     *//*
-
-
-    public Boolean getStdinOpen() {
-        return stdinOpen;
-    }
-
-    */
-/**
-     * @see #stdinOpen
-     *//*
-
-
-    */
-/**
-     * @see #tty
-     *//*
-
-
-    public Boolean getTty() {
-        return tty;
-    }
-
-    */
-/**
-     * @see #tty
-     *//*
-
-
-    */
-/**
-     * @see #user
-     *//*
-
-
-    public String getUser() {
-        return user;
-    }
-
-    */
-/**
-     * @see #user
-     *//*
-
-
-    */
-/**
-     * @see #volumes
-     *//*
-
-
-    public Map<String, ?> getVolumes() {
-        return volumes;
-    }
-
-    */
-/**
-     * @see #volumes
-     *//*
-
-
-    */
-/**
-     * @see #workingDir
-     *//*
-
 
     public String getWorkingDir() {
         return workingDir;
     }
 
-    */
-/**
-     * @see #healthCheck
-     *//*
-
-
-    */
-/*public HealthCheck getHealthcheck() {
-        return healthCheck;
-    }*//*
-
-
-    */
-/**
-     * @see #workingDir
-     *//*
-
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+    public void setWorkingDir(String workingDir) {
+        this.workingDir = workingDir;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this, o);
+    public String getHostName() {
+        return hostName;
     }
 
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
     }
-*/
+
+    public Map<String, String> getLabels() {
+        return labels;
+    }
+
+    /**
+     * @see #labels
+     */
+    public void setLabels(Map<String, String> labels) {
+        this.labels = labels;
+
+    }
 }

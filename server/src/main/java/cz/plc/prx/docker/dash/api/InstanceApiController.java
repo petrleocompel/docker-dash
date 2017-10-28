@@ -38,6 +38,7 @@ public class InstanceApiController implements InstanceApi {
 
     public ResponseEntity<Void> instanceDelete(@ApiParam(value = "name of selected Instance", required = true) @PathVariable("id") String id) {
         // do some magic!
+        docker.getDefaultConnection().removeContainerCmd(id).exec();
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 

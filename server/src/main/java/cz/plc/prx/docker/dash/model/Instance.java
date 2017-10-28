@@ -24,12 +24,6 @@ public class Instance {
     @JsonProperty("created")
     private String created = null;
 
-    @JsonProperty("path")
-    private String path = null;
-
-    @JsonProperty("args")
-    private List<String> args = null;
-
     @JsonProperty("image")
     private String image = null;
 
@@ -84,55 +78,6 @@ public class Instance {
         this.created = created;
     }
 
-    public Instance path(String path) {
-        this.path = path;
-        return this;
-    }
-
-    /**
-     * Get path
-     *
-     * @return path
-     **/
-    @ApiModelProperty(value = "")
-
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public Instance args(List<String> args) {
-        this.args = args;
-        return this;
-    }
-
-    public Instance addArgsItem(String argsItem) {
-        if (this.args == null) {
-            this.args = new ArrayList<String>();
-        }
-        this.args.add(argsItem);
-        return this;
-    }
-
-    /**
-     * Get args
-     *
-     * @return args
-     **/
-    @ApiModelProperty(value = "")
-
-
-    public List<String> getArgs() {
-        return args;
-    }
-
-    public void setArgs(List<String> args) {
-        this.args = args;
-    }
 
     public Instance image(String image) {
         this.image = image;
@@ -230,8 +175,6 @@ public class Instance {
         Instance instance = (Instance) o;
         return Objects.equals(this.id, instance.id) &&
                 Objects.equals(this.created, instance.created) &&
-                Objects.equals(this.path, instance.path) &&
-                Objects.equals(this.args, instance.args) &&
                 Objects.equals(this.image, instance.image) &&
                 Objects.equals(this.name, instance.name) &&
                 Objects.equals(this.imageId, instance.imageId) &&
@@ -240,7 +183,7 @@ public class Instance {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, created, path, args, image, name, imageId, status);
+        return Objects.hash(id, created, image, name, imageId, status);
     }
 
     @Override
@@ -250,8 +193,6 @@ public class Instance {
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    created: ").append(toIndentedString(created)).append("\n");
-        sb.append("    path: ").append(toIndentedString(path)).append("\n");
-        sb.append("    args: ").append(toIndentedString(args)).append("\n");
         sb.append("    image: ").append(toIndentedString(image)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    imageId: ").append(toIndentedString(imageId)).append("\n");
