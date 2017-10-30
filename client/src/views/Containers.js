@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
-class Dashboard extends Component {
+class Containers extends Component {
 
   render() {
     return (
       <div className="animated fadeIn">
-        Doker-Dash
+        Docker Containers
       </div>
     )
   }
 }
 
-export default Dashboard;
+export default Containers;
