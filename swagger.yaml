@@ -453,8 +453,7 @@
         },
         "AttachStdout": {
           "type": "boolean"
-        },
-        "Cmd": {
+        }, "Cmd": {
           "type": "array",
           "items": {
             "type": "string"
