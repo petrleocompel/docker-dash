@@ -39,9 +39,11 @@ export function environment() {
     return {fetch: fetch(basePath + "environment")}
 }
 
+/*
 export function environment(id){
     return {fetch: fetch(basePath + "environment/" + id)}
 }
+*/
 
 export function environmentDelete(id){
     return {fetch: fetch(basePath + "environment/" + id, {method: 'DELETE'})}
@@ -55,7 +57,7 @@ export function environmentStart(id){
     return {fetch: fetch(basePath + "environment/" + id + "/start", {method: 'POST'})}
 }
 
-export function envirnmentRestart(id){
+export function environmentRestart(id){
     return {fetch: fetch(basePath + "environment/" + id + "/restart", {method: 'POST'})}
 }
 

@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
-import {responsr, getAll} from '../api'
+import {responsr, getAll, instanceStop, instanceRestart, instanceStart} from '../api'
 import {Table} from 'reactstrap'
 import Loader from '../Loader'
-import { Button } from 'reactstrap'
+import {Button} from 'reactstrap'
 
 
 class Dashboard extends Component {
@@ -14,14 +14,21 @@ class Dashboard extends Component {
         })
     }
 
-    handleStart = (id) =>{alert('Process started TODO')};
+    handleStop = (id) => {
+        instanceStop(id);
+    };
 
-    handleStop = (id) =>{alert('Process stopped TODO')};
+    handleStart = (id) => {
+        instanceStart(id)
+    };
 
-    handleRestart = (id) =>{alert('Restarting .... TODO')};
+    handleRestart = (id) => {
+        instanceRestart(id);
+    };
 
-    handleList = (id) =>{alert('Listing item TODO')};
-
+    handleList = (id) => {
+        alert('Listing item TODO')
+    };
 
     render() {
         if (!this.state.images) {
@@ -37,6 +44,7 @@ class Dashboard extends Component {
                     <th>Name</th>
                     <th>Mountpoint</th>
                     <th>Actions</th>
+                    <th>Image name</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -45,15 +53,21 @@ class Dashboard extends Component {
                         <td>{item.id}</td>
                         <td>{item.name}</td>
                         <td>{item.mountpoint}</td>
-                        <td> <div>
-                            <Button outline color="info" onClick={() => this.handleList(item.id)}>List</Button>{' '}
-                            <Button outline color="success" onClick={() => this.handleStart(item.id)}>Start</Button>{' '}
-                            <Button outline color="danger" onClick={this.handleStop}>Stop</Button>{' '}
-                            <Button outline color="warning" onClick={this.handleRestart}>Restart</Button>{' '}
-                        </div></td>
+                        <td>
+                            <div>
+                                <Button outline color="info"
+                                        onClick={() => this.handleList(item.id)}>List</Button>{' '}
+                                <Button outline color="success"
+                                        onClick={() => this.handleStart(item.id)}>Start</Button>{' '}
+                                <Button outline color="danger"
+                                        onClick={() => this.handleStop(item.id)}>Stop</Button>{' '}
+                                <Button outline color="warning"
+                                        onClick={() => this.handleRestart}>Restart</Button>{' '}
+                            </div>
+                        </td>
+                        <td>{item.image}</td>
                     </tr>
                 })}
-
                 </tbody>
             </Table>
         )
