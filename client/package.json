@@ -46,6 +46,7 @@
     "react-fontawesome": "^1.6.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "4.1.2",
+    "react-toastify": "^2.1.6",
     "reactstrap": "^4.8.0",
     "redux": "^3.7.2",
     "simple-line-icons": "^2.4.1"

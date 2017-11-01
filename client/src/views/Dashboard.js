@@ -3,14 +3,20 @@ import {responsr, getAll, instanceStop, instanceRestart, instanceStart} from '..
 import {Table} from 'reactstrap'
 import Loader from '../Loader'
 import {Button} from 'reactstrap'
+import Toastr from '../Toastr'
 
 
 class Dashboard extends Component {
     state = {images: null};
 
+
     componentDidMount() {
         responsr(getAll()).then((data) => {
             this.setState({images: data.others});
+
+            /*if(data.status === 404){
+                return <Toastr/>
+            }*/
         })
     }
 
@@ -43,6 +49,7 @@ class Dashboard extends Component {
                     <th>ID</th>
                     <th>Name</th>
                     <th>Mountpoint</th>
+                    <th>Status</th>
                     <th>Actions</th>
                     <th>Image name</th>
                 </tr>
@@ -53,6 +60,7 @@ class Dashboard extends Component {
                         <td>{item.id}</td>
                         <td>{item.name}</td>
                         <td>{item.mountpoint}</td>
+                        <td>{item.status}</td>
                         <td>
                             <div>
                                 <Button outline color="info"
