@@ -3,7 +3,7 @@ import {responsr, getAll, instanceStop, instanceRestart, instanceStart} from '..
 import {Table} from 'reactstrap'
 import Loader from '../Loader'
 import {Button} from 'reactstrap'
-import Toastr from '../Toastr'
+import Cards from '../Cards'
 
 
 class Dashboard extends Component {
@@ -14,9 +14,7 @@ class Dashboard extends Component {
         responsr(getAll()).then((data) => {
             this.setState({images: data.others});
 
-            /*if(data.status === 404){
-                return <Toastr/>
-            }*/
+
         })
     }
 
@@ -43,6 +41,11 @@ class Dashboard extends Component {
         }
 
         return (
+            this.state.images.map((item, index) =>{
+              return <Cards key={index} color="success" header={item.id} mainText={item.image} variant="inverse" smallText={item.status}
+              />
+        })
+            /*
             <Table inverse>
                 <thead>
                 <tr>
@@ -77,7 +80,7 @@ class Dashboard extends Component {
                     </tr>
                 })}
                 </tbody>
-            </Table>
+            </Table>*/
         )
     }
 }
