@@ -36,7 +36,10 @@ public class EnvironmentApiController implements EnvironmentApi {
 
     public ResponseEntity<List<Environment>> environmentGet() {
         // do some magic!
-        return new ResponseEntity<List<Environment>>(HttpStatus.OK);
+        List<Environment> all = environmentService.getAll();
+
+
+        return new ResponseEntity<List<Environment>>(all,HttpStatus.OK);
     }
 
     public ResponseEntity<Environment> environmentGet(@ApiParam(value = "name of selected Environment",required=true ) @PathVariable("id") String id) {
