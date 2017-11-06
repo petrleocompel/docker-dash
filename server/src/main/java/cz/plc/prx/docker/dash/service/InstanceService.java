@@ -28,7 +28,6 @@ public class InstanceService {
         List<Container> runningContainers = dcService.getDefaultConnection().listContainersCmd().exec();
         for (int i = 0; i < runningContainers.size(); i++) {
             containerList.add(runningContainers.get(i));
-            System.out.println(runningContainers.get(i).getCreated());
         }
 
         return objectFactory.convert(containerList, Instance.class);
