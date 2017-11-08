@@ -1,9 +1,9 @@
-
 import React, {Component} from "react";
 import PropTypes from 'prop-types';
-import {Card, CardBlock, Progress} from "reactstrap";
+import {Card, CardBlock, Button, ButtonGroup} from "reactstrap";
 import classNames from 'classnames';
 import {mapToCssModules} from 'reactstrap/lib/utils';
+import {instanceRestart, instanceStart, instanceStop} from "./api";
 
 const propTypes = {
     header: PropTypes.string,
@@ -27,8 +27,10 @@ const defaultProps = {
 };
 
 class Cards extends React.Component {
+
+
     render() {
-        const {className, cssModule, header, mainText, smallText, color, value, children, variant, ...attributes} = this.props;
+        const {className, cssModule, header, mainText, smallText, color, value, children, variant, start, stop, restart, ...attributes} = this.props;
 
         // demo purposes only
         const progress = {style: "", color: color, value: value};
@@ -44,13 +46,23 @@ class Cards extends React.Component {
         const classes = mapToCssModules(classNames(className, card.style, card.bgColor), cssModule);
         progress.style = classNames("progress-xs my-1", progress.style);
 
+
         return (
-            <Card className={ classes } {...attributes}>
+
+            <Card className={classes} {...attributes}>
                 <CardBlock className="card-body">
-                    <div className="h4 m-0">{ header }</div>
-                    <div>{ mainText }</div>
-                    <Progress className={ progress.style } color={ progress.color } value={ progress.value }/>
-                    <small className="text-muted">{ smallText }</small>
+                    <div className="btn-group float-right ">
+                        <ButtonGroup>
+                            <ButtonGroup>
+                                <Button color="success" onClick={start}>Start</Button>{' '}
+                                <Button color="danger" onClick={stop}>Stop</Button>{' '}
+                                <Button color="warning" onClick={restart}>Restart</Button>
+                            </ButtonGroup>
+                        </ButtonGroup>
+                    </div>
+                    <div className="h4 m-0">{header}</div>
+                    <div>{mainText}</div>
+                    <small className="text-muted">{smallText}</small>
                     <div>{children}</div>
                 </CardBlock>
             </Card>
