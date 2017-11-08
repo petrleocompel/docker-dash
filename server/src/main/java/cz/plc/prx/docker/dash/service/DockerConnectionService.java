@@ -4,8 +4,7 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
-import cz.plc.prx.docker.dash.model.WithDockerHost;
-import cz.plc.prx.docker.dash.util.OsCheck;
+import org.apache.commons.lang.SystemUtils;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotSupportedException;
@@ -23,7 +22,6 @@ public class DockerConnectionService {
     private static String protocol;
     private static String address;
     private static String socket;
-
     /**
      * TODO delete and make method with serverId param after thinking about it
      *
@@ -33,27 +31,22 @@ public class DockerConnectionService {
         return connections.computeIfAbsent(DEFAULT_CONNECTION, id -> {
             DockerClientConfig config = null;
 
-            String ostype = OsCheck.getOperatingSystemType();
-
-            switch (ostype) {
-                case "MacOS":
-                    config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-                            .withDockerHost("unix:///var/run/docker.sock")
-                            .build();
-                    break;
-                case "Linux":
-                    config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-                            .withDockerHost("unix:///var/run/docker.sock")
-                            .build();
-                    break;
-                case "Windows":
-
-                    config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-                            .withDockerHost("tcp://localhost:2376")
-                            .withDockerTlsVerify(true)
-                            .withDockerTlsVerify("1")
-                            .build();
-                    break;
+            if(SystemUtils.IS_OS_MAC_OSX){
+                config = DefaultDockerClientConfig.createDefaultConfigBuilder()
+                        .withDockerHost("unix:///var/run/docker.sock")
+                        .build();
+            }
+            if(SystemUtils.IS_OS_LINUX){
+                config = DefaultDockerClientConfig.createDefaultConfigBuilder()
+                        .withDockerHost("unix:///var/run/docker.sock")
+                        .build();
+            }
+            if(SystemUtils.IS_OS_WINDOWS){
+                config = DefaultDockerClientConfig.createDefaultConfigBuilder()
+                        .withDockerHost("tcp://localhost:2376")
+                        .withDockerTlsVerify(true)
+                        .withDockerTlsVerify("1")
+                        .build();
             }
 
             return DockerClientBuilder.getInstance(config).build();

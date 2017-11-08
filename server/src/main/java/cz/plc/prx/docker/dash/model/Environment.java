@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -15,20 +16,20 @@ import java.util.Objects;
 
 public class Environment {
     @JsonProperty("services")
-    private List<Instance> services = null;
+    private Map<String, List<Instance>> services = null;
 
     public Environment services(List<Instance> services) {
-        this.services = services;
+        this.services = (Map<String, List<Instance>>) services;
         return this;
     }
 
-    public Environment addServicesItem(Instance servicesItem) {
+    /*public Environment addServicesItem(Instance servicesItem) {
         if (this.services == null) {
-            this.services = new ArrayList<Instance>();
+            this.services = (Map<String, List<Instance>>) new ArrayList<Instance>();
         }
         this.services.add(servicesItem);
         return this;
-    }
+    }*/
 
     /**
      * Get services
@@ -39,12 +40,12 @@ public class Environment {
 
     @Valid
 
-    public List<Instance> getServices() {
-        return services;
+    public Map<String, List<Instance>> getServices() {
+        return (Map<String, List<Instance>>) services;
     }
 
-    public void setServices(List<Instance> services) {
-        this.services = services;
+    public void setServices(Map<String, List<Instance>> services) {
+        this.services = (Map<String, List<Instance>>) services;
     }
 
 
