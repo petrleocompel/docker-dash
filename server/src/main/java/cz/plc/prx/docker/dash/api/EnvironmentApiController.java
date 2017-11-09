@@ -37,8 +37,6 @@ public class EnvironmentApiController implements EnvironmentApi {
     public ResponseEntity<List<Environment>> environmentGet() {
         // do some magic!
         List<Environment> all = environmentService.getAll();
-
-
         return new ResponseEntity<List<Environment>>(all,HttpStatus.OK);
     }
 

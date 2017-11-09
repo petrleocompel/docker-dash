@@ -12,7 +12,8 @@ import java.util.*;
 @Service
 public class EnvironmentService {
     private final String COMPOSE_PROJECT = "com.docker.compose.project";
-    private final boolean LABEL_BLACKLIST = true;
+    private final String COMPOSE_SERVICE = "com.docker.compose.service";
+    private final String LABEL_BLACKLIST = "LABEL_BLACKLIST";
 
     @Autowired
     DockerConnectionService dcService;
@@ -20,46 +21,28 @@ public class EnvironmentService {
     @Autowired
     ObjectFactory objectFactory;
 
-    public List<Environment>getAll() {
+    public List<Environment> getAll() {
         List<Container> containerList = dcService.getDefaultConnection().listContainersCmd().withShowAll(true).exec();
-        Map<String, List<Container>> services = new HashMap<String ,List<Container>>();
+        Map<String, List<Container>> services = new HashMap<String, List<Container>>();
 
-        List<Container> servicesContainers = new ArrayList<Container>();
         for (Container element : containerList) {
             InspectContainerResponse exec = dcService.getDefaultConnection().inspectContainerCmd(element.getId()).exec();
-
-
-            List<String> composeName = new ArrayList<String>();
-            exec.getConfig().getLabels().forEach((k, v) -> {
-
-                if (k.equals(COMPOSE_PROJECT)) {
-                    servicesContainers.add(element);
-                    composeName.add(v);
-
-                }
-
-                        if (k.equals(LABEL_BLACKLIST)) {
-                    // TODO black listed
-                        }
-            });
-            if (!servicesContainers.isEmpty()&&!composeName.isEmpty()){
-                services.put(composeName.get(0),servicesContainers);
-                composeName.clear();
+            List<Container> servicesContainers = new ArrayList<Container>();
+            boolean isCompose = exec.getConfig().getLabels().containsKey(COMPOSE_PROJECT);
+            if (isCompose && !exec.getConfig().getLabels().containsKey(LABEL_BLACKLIST)) {
+                servicesContainers.add(element);
+                services.put(servicesContainers.get(0).labels.get(COMPOSE_SERVICE), servicesContainers);
             }
-
-            }
-        List<Environment> environments = new ArrayList<Environment>();
-for(Map.Entry<String , List<Container> >entry :services.entrySet()){
-    Map<String, List<Instance>> convertedServices = new HashMap<String ,List<Instance>>();
-        List < Instance > obj = objectFactory.convert(entry.getValue(), Instance.class);
-
-    convertedServices.put(entry.getKey(),obj);
-    Environment env= new Environment();
-    env.setServices(convertedServices);
-    environments.add(env);
 
         }
 
+        List<Environment> environments = new ArrayList<Environment>();
+        Environment env = new Environment();
+        for (Map.Entry<String, List<Container>> entry : services.entrySet()) {
+            List<Instance> obj = objectFactory.convert(entry.getValue(), Instance.class);
+            env.addServicesItem(obj.get(0));
+        }
+        environments.add(env);
 
         return environments;
     }
