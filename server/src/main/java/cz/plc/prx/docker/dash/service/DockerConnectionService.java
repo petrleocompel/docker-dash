@@ -6,8 +6,7 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import org.apache.commons.lang.SystemUtils;
 import org.springframework.stereotype.Service;
-
-import javax.ws.rs.NotSupportedException;
+import org.mapdb.DBMaker.Maker;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +42,7 @@ public class DockerConnectionService {
             }
             if(SystemUtils.IS_OS_WINDOWS){
                 config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-                        .withDockerHost("tcp://localhost:2376")
+                        .withDockerHost("tcp://localhost:2375")
                         .withDockerTlsVerify(true)
                         .withDockerTlsVerify("1")
                         .build();

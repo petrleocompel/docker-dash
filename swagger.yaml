@@ -1,509 +1,313 @@
-{
-  "swagger": "2.0",
-  "info": {
-    "description": "Project created in order to simplify work with docker in GUI.",
-    "version": "1.0.0",
-    "title": "Docker dashboard",
-    "contact": {
-      "name": "Docker dash team",
-      "url": "https://github.com/petrleocompel/docker-dash/issues"
-    },
-    "termsOfService": "http://swagger.io/terms/"
-  },
-  "host": "localhost:5000",
-  "basePath": "/api",
-  "tags": [
-    {
-      "name": "Readme0",
-      "externalDocs": {
-        "description": "link",
-        "url": "https://github.com/petrleocompel/docker-dash/blob/master/README.md"
-      }
-    },
-    {
-      "name": "docker-dash",
-      "externalDocs": {
-        "description": "Find out more",
-        "url": "https://github.com/petrleocompel/docker-dash"
-      }
-    }
-  ],
-  "schemes": [
-    "http"
-  ],
-  "paths": {
-    "/get-all": {
-      "get": {
-        "tags": [
-          "Docker"
-        ],
-        "summary": "Get all groups",
-        "description": "Return docker groups and its content such as group named environments containing services",
-        "operationId": "getAll",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Groups"
-            }
-          },
-          "400": {
-            "description": "Invalid status value"
-          }
-        }
-      }
-    },
-    "/environment": {
-      "get": {
-        "tags": [
-          "Environment"
-        ],
-        "summary": "Get the services of the group named Environment",
-        "description": "Returns array of containers",
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Environment"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/environment/{id}": {
-      "get": {
-        "tags": [
-          "Environment"
-        ],
-        "summary": "Get a service selected  by its ID",
-        "description": "",
-        "operationId": "environmentGet",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "name of selected Environment",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Environment"
-            }
-          },
-          "404": {
-            "description": "A container with the specified Environment ID was not found."
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Environment"
-        ],
-        "summary": "Delete a service selected by its ID",
-        "description": "",
-        "operationId": "environmentDelete",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "name of selected Environment",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "404": {
-            "description": "A container with the specified Environment ID was not found."
-          }
-        }
-      }
-    },
-    "/environment/{id}/stop": {
-      "post": {
-        "tags": [
-          "Environment"
-        ],
-        "summary": "Stop a service selected by its ID",
-        "description": "",
-        "operationId": "environmentStop",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "name of selected Environment",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/environment/{id}/start": {
-      "post": {
-        "tags": [
-          "Environment"
-        ],
-        "summary": "Start a service selected by its ID",
-        "description": "",
-        "operationId": "environmentStart",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "name of selected Environment",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/environment/{id}/restart": {
-      "post": {
-        "tags": [
-          "Environment"
-        ],
-        "summary": "Restart a service selected by its ID",
-        "description": "",
-        "operationId": "environmentRestart",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "name of selected Environment",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/instance/{id}": {
-      "get": {
-        "tags": [
-          "Instance"
-        ],
-        "summary": "Get an instance selected by its ID",
-        "description": "",
-        "operationId": "instanceGet",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "name of selected Instance",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/InstanceExt"
-            }
-          },
-          "404": {
-            "description": "A container with the specified Instance ID was not found."
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Instance"
-        ],
-        "summary": "Delete selected instance by its ID",
-        "description": "",
-        "operationId": "instanceDelete",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "name of selected Instance",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/instance/{id}/stop": {
-      "post": {
-        "tags": [
-          "Instance"
-        ],
-        "summary": "Stop an instance selected by its ID",
-        "description": "",
-        "operationId": "instanceStop",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "name of selected container",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/instance/{id}/start": {
-      "post": {
-        "tags": [
-          "Instance"
-        ],
-        "summary": "Start an instance selected by its ID",
-        "description": "",
-        "operationId": "instanceStart",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "name of selected container",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/instance/{id}/restart": {
-      "post": {
-        "tags": [
-          "Instance"
-        ],
-        "summary": "Restart an instance selected by its ID",
-        "description": "",
-        "operationId": "instanceRestart",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "description": "name of selected container",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "Groups": {
-      "type": "object",
-      "properties": {
-        "environments": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Environment"
-          }
-        },
-        "others": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Instance"
-          }
-        }
-      }
-    },
-    "Environment": {
-      "type": "object",
-      "properties": {
-        "services": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Instance"
-          }
-        }
-      }
-    },
-    "Instance": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "created": {
-          "type": "integer"
-        },
-        "image": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "imageId": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        }
-      }
-    },
-    "InstanceExt": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Instance"
-        },
-        {
-          "properties": {
-            "Config": {
-              "$ref": "#/definitions/ContainerConf"
-            },
-            "Driver": {
-              "type": "string"
-            },
-            "ExecIDs": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "HostnamePath": {
-              "type": "string"
-            },
-            "Domainname": {
-              "type": "string"
-            },
-            "Mount": {
-              "$ref": "#/definitions/Mount"
-            }
-          }
-        }
-      ]
-    },
-    "ContainerConf": {
-      "type": "object",
-      "properties": {
-        "AttachStderr": {
-          "type": "boolean"
-        },
-        "AttachStdin": {
-          "type": "boolean"
-        },
-        "AttachStdout": {
-          "type": "boolean"
-        }, "Cmd": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "Entrypoint": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "Env": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "Hostname": {
-          "type": "string"
-        },
-        "Labels": {
-          "type": "object"
-        },
-        "WorkingDir": {
-          "type": "string"
-        }
-      }
-    },
-    "Mount": {
-      "type": "object",
-      "properties": {
-        "Name": {
-          "type": "string"
-        },
-        "Source": {
-          "type": "string"
-        },
-        "Destination": {
-          "type": "string"
-        },
-        "Driver": {
-          "type": "string"
-        },
-        "Mode": {
-          "type": "string"
-        },
-        "RW": {
-          "type": "boolean"
-        }
-      }
-    }
-  }
-}
+swagger: '2.0'
+info:
+  description: Project created in order to simplify work with docker in GUI.
+  version: 1.0.0
+  title: Docker dashboard
+  contact:
+     name: Docker dash team
+     url: 'https://github.com/petrleocompel/docker-dash/issues'
+  termsOfService: 'http://swagger.io/terms/'
+host: 'localhost:4000'
+basePath: /api
+
+tags:
+  - name: Readme 
+    externalDocs:
+      description: "link"
+      url: 'https://github.com/petrleocompel/docker-dash/blob/master/README.md' 
+  - name: docker-dash
+    externalDocs:
+      description: Find out more
+      url: 'https://github.com/petrleocompel/docker-dash'
+     
+schemes:
+  - http
+paths:
+  /get-all:
+    get:
+      tags:
+        - Docker
+      summary: Get all groups
+      description: Return docker containers, compose
+      operationId: getAll
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Groups'
+        '400':
+          description: Invalid status value
+  /environment:
+    get:
+      tags:
+        - Environment
+      summary: Get the services of the group named Environment
+      description: Returns array of containers 
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Environment'
+  '/environment/{id}/stop':
+    post:
+      tags:
+        - Environment
+      summary: Stop a service selected by its ID
+      description:  ""  
+      operationId: environmentStop
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected Environment
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+  '/environment/{id}/start':
+    post:
+      tags:
+        - Environment
+      summary: Start a service selected by its ID
+      description:  "" 
+      operationId: environmentStart
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected Environment
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+  '/environment/{id}/restart':
+    post:
+      tags:
+        - Environment
+      summary: Restart a service selected by its ID
+      description:  ""  
+      operationId: environmentRestart
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected Environment
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+  '/instance/{id}':
+    get:
+      tags:
+        - Instance
+      summary: Get an instance selected by its ID
+      description:  ""  
+      operationId: instanceGet
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected Instance
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/InstanceExt'
+        '404':
+          description: A container with the specified Instance ID was not found.
+    delete:
+      tags:
+        - Instance
+      summary: Delete selected instance by its ID
+      description:  ""   
+      operationId: instanceDelete
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected Instance
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+  '/instance/{id}/stop':
+    post:
+      tags:
+        - Instance
+      summary: Stop an instance selected by its ID
+      description:  ""  
+      operationId: instanceStop
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected container
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+  '/instance/{id}/start':
+    post:
+      tags:
+        - Instance
+      summary: Start an instance selected by its ID
+      description:  ""  
+      operationId: instanceStart
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected container
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+  '/instance/{id}/restart':
+    post:
+      tags:
+        - Instance
+      summary: Restart an instance selected by its ID
+      description:  ""  
+      operationId: instanceRestart
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: name of selected container
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+definitions:
+  Groups:
+    type: object
+    properties:
+      environments:
+        type: array
+        items:
+          $ref: '#/definitions/Environment'
+      others:
+        type: array
+        items:
+          $ref: '#/definitions/Instance'
+  Environment:
+    type: object
+    properties:
+      services:
+        type: array
+        items:
+          $ref: '#/definitions/Instance'
+  Instance:
+    type: object
+    properties:
+      id:
+        type: string
+      created:
+        type: integer
+      image:
+        type: string
+      name:
+        type: string
+      imageId:
+        type: string
+      status:
+        type: string
+      labels:
+        type: object
+        additionalProperties:
+            type: string
+              
+  InstanceExt:
+    allOf:
+      - $ref: '#/definitions/Instance'
+      - properties:
+          
+          Config:
+            $ref: '#/definitions/ContainerConf'      
+          Driver:
+            type: string
+          ExecIDs:
+            type: array
+            items:
+              type: string
+          HostnamePath:
+            type: string
+          Domainname:
+            type: string
+          Mount:
+            $ref: '#/definitions/Mount'
+  ContainerConf:
+    type: object
+    properties:
+      AttachStderr:
+        type: boolean
+      AttachStdin:
+        type: boolean
+      AttachStdout:
+        type: boolean
+      Cmd:
+        type: array
+        items:
+          type: string
+      Entrypoint:
+        type: array
+        items:
+          type: string
+      Env:
+        type: array
+        items:
+          type: string   
+      Hostname:
+        type: string
+      Labels:
+        type: object
+      WorkingDir:
+        type: string
+  Mount:
+    type: object
+    properties:
+      Name:
+        type: string   
+      Source:
+        type: string   
+      Destination:
+        type: string   
+      Driver:
+        type: string   
+      Mode:
+        type: string   
+      RW:
+        type: boolean
+        
+  WithDockerHost:
+    type: object
+    properties:
+      Protocol:
+        type: string
+      Address:
+        type: string
+      Port:
+        type: integer
+      WithTls:
+        type: boolean
