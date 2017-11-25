@@ -16,11 +16,42 @@ public class EnvironmentService {
     private final String COMPOSE_PROJECT = "com.docker.compose.project";
     private final String LABEL_BLACKLIST = "LABEL_BLACKLIST";
 
+    public enum ServiceAction {
+        Stop,
+        Start,
+        Restart,
+        Delete,
+        Get
+    }
+
     @Autowired
     DockerConnectionService dcService;
 
     @Autowired
     ObjectFactory objectFactory;
+
+    public void environmentServiceAction(String id, ServiceAction serviceAction) {
+        switch (serviceAction) {
+            case Start:
+                List<Environment> environments = getAll();
+                for (Environment en :
+                        environments) {
+                    List<Instance> services = en.getServices();
+                    for (Instance instance :
+                            services) {
+                        instance.getLabels().forEach((s, s2) -> {
+                            if (s2.equals(id)) {
+                                dcService.getDefaultConnection().startContainerCmd(instance.getId()).exec();
+                            }
+                        });
+                    }
+                }
+                ;
+                break;
+            default:
+                break;
+        }
+    }
 
     public List<Environment> getAll() {
         List<Container> containerList = dcService.getDefaultConnection().listContainersCmd().withShowAll(true).exec();
@@ -67,7 +98,8 @@ public class EnvironmentService {
 
         return environments;
     }
-    public void listByProjectName(){
+
+    public void listByProjectName() {
 
     }
 }

@@ -32,7 +32,7 @@ public class EnvironmentApiController implements EnvironmentApi {
     }
 
     public ResponseEntity<Environment> environmentGet(@ApiParam(value = "name of selected Environment", required = true) @PathVariable("id") String id) {
-
+        environmentService.environmentServiceAction(id, EnvironmentService.ServiceAction.Start);
         return new ResponseEntity<Environment>(HttpStatus.OK);
     }
 
