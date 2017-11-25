@@ -31,9 +31,9 @@ public class EnvironmentService {
     ObjectFactory objectFactory;
 
     public void environmentServiceAction(String id, ServiceAction serviceAction) {
+        List<Environment> environments = getAll();
         switch (serviceAction) {
             case Start:
-                List<Environment> environments = getAll();
                 for (Environment en :
                         environments) {
                     List<Instance> services = en.getServices();
@@ -46,7 +46,50 @@ public class EnvironmentService {
                         });
                     }
                 }
-                ;
+                break;
+            case Stop:
+                for (Environment en :
+                        environments) {
+                    List<Instance> services = en.getServices();
+                    for (Instance instance :
+                            services) {
+                        instance.getLabels().forEach((s, s2) -> {
+                            if (s2.equals(id)) {
+                                dcService.getDefaultConnection().stopContainerCmd(instance.getId()).exec();
+                            }
+                        });
+                    }
+                }
+                break;
+            case Restart:
+                for (Environment en :
+                        environments) {
+                    List<Instance> services = en.getServices();
+                    for (Instance instance :
+                            services) {
+                        instance.getLabels().forEach((s, s2) -> {
+                            if (s2.equals(id)) {
+                                dcService.getDefaultConnection().restartContainerCmd(instance.getId()).exec();
+                            }
+                        });
+                    }
+                }
+                break;
+
+            case Get:
+                for (Environment en :
+                        environments) {
+                    List<Instance> services = en.getServices();
+                    for (Instance instance :
+                            services) {
+                        instance.getLabels().forEach((s, s2) -> {
+                            if (s2.equals(id)) {
+                             //TODO get environment
+                                //   dcService.getDefaultConnection().restartContainerCmd(instance.getId()).exec();
+                            }
+                        });
+                    }
+                }
                 break;
             default:
                 break;

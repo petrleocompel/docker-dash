@@ -32,22 +32,22 @@ public class EnvironmentApiController implements EnvironmentApi {
     }
 
     public ResponseEntity<Environment> environmentGet(@ApiParam(value = "name of selected Environment", required = true) @PathVariable("id") String id) {
-        environmentService.environmentServiceAction(id, EnvironmentService.ServiceAction.Start);
+
         return new ResponseEntity<Environment>(HttpStatus.OK);
     }
 
     public ResponseEntity<Void> environmentRestart(@ApiParam(value = "name of selected Environment", required = true) @PathVariable("id") String id) {
-        // do some magic!
+        environmentService.environmentServiceAction(id, EnvironmentService.ServiceAction.Restart);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     public ResponseEntity<Void> environmentStart(@ApiParam(value = "name of selected Environment", required = true) @PathVariable("id") String id) {
-        // do some magic!
+        environmentService.environmentServiceAction(id, EnvironmentService.ServiceAction.Start);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     public ResponseEntity<Void> environmentStop(@ApiParam(value = "name of selected Environment", required = true) @PathVariable("id") String id) {
-        // do some magic!
+        environmentService.environmentServiceAction(id, EnvironmentService.ServiceAction.Stop);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
