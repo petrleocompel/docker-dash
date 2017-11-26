@@ -39,11 +39,9 @@ public class EnvironmentService {
                     List<Instance> services = en.getServices();
                     for (Instance instance :
                             services) {
-                        instance.getLabels().forEach((s, s2) -> {
-                            if (s2.equals(id)) {
-                                dcService.getDefaultConnection().startContainerCmd(instance.getId()).exec();
-                            }
-                        });
+                        if (Boolean.valueOf(instance.getLabels().containsValue(id)))
+                            dcService.getDefaultConnection().startContainerCmd(instance.getId()).exec();
+
                     }
                 }
                 break;
@@ -53,11 +51,13 @@ public class EnvironmentService {
                     List<Instance> services = en.getServices();
                     for (Instance instance :
                             services) {
-                        instance.getLabels().forEach((s, s2) -> {
+                        if (Boolean.valueOf(instance.getLabels().containsValue(id)))
+                            dcService.getDefaultConnection().stopContainerCmd(instance.getId()).exec();
+                        /*instance.getLabels().forEach((s, s2) -> {
                             if (s2.equals(id)) {
                                 dcService.getDefaultConnection().stopContainerCmd(instance.getId()).exec();
                             }
-                        });
+                        });*/
                     }
                 }
                 break;
@@ -67,11 +67,9 @@ public class EnvironmentService {
                     List<Instance> services = en.getServices();
                     for (Instance instance :
                             services) {
-                        instance.getLabels().forEach((s, s2) -> {
-                            if (s2.equals(id)) {
-                                dcService.getDefaultConnection().restartContainerCmd(instance.getId()).exec();
-                            }
-                        });
+                        if(Boolean.valueOf(instance.getLabels().containsValue(id)))
+                            dcService.getDefaultConnection().restartContainerCmd(instance.getId()).exec();
+
                     }
                 }
                 break;
@@ -82,12 +80,9 @@ public class EnvironmentService {
                     List<Instance> services = en.getServices();
                     for (Instance instance :
                             services) {
-                        instance.getLabels().forEach((s, s2) -> {
-                            if (s2.equals(id)) {
-                             //TODO get environment
+                        if(Boolean.valueOf(instance.getLabels().containsValue(id))){}
+                                //TODO get environment
                                 //   dcService.getDefaultConnection().restartContainerCmd(instance.getId()).exec();
-                            }
-                        });
                     }
                 }
                 break;
