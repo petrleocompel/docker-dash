@@ -21,7 +21,7 @@ public class EnvironmentApiController implements EnvironmentApi {
 
 
     public ResponseEntity<Void> environmentDelete(@ApiParam(value = "name of selected Environment", required = true) @PathVariable("id") String id) {
-
+        environmentService.environmentServiceAction(id, EnvironmentService.ServiceAction.Delete);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
@@ -33,7 +33,7 @@ public class EnvironmentApiController implements EnvironmentApi {
 
     public ResponseEntity<Environment> environmentGet(@ApiParam(value = "name of selected Environment", required = true) @PathVariable("id") String id) {
 
-        return new ResponseEntity<Environment>(HttpStatus.OK);
+        return new ResponseEntity<Environment>(environmentService.getEnvironmentByID(id),HttpStatus.OK);
     }
 
     public ResponseEntity<Void> environmentRestart(@ApiParam(value = "name of selected Environment", required = true) @PathVariable("id") String id) {

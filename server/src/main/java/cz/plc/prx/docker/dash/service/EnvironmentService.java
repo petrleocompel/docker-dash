@@ -21,7 +21,6 @@ public class EnvironmentService {
         Start,
         Restart,
         Delete,
-        Get
     }
 
     @Autowired
@@ -53,11 +52,6 @@ public class EnvironmentService {
                             services) {
                         if (Boolean.valueOf(instance.getLabels().containsValue(id)))
                             dcService.getDefaultConnection().stopContainerCmd(instance.getId()).exec();
-                        /*instance.getLabels().forEach((s, s2) -> {
-                            if (s2.equals(id)) {
-                                dcService.getDefaultConnection().stopContainerCmd(instance.getId()).exec();
-                            }
-                        });*/
                     }
                 }
                 break;
@@ -67,28 +61,45 @@ public class EnvironmentService {
                     List<Instance> services = en.getServices();
                     for (Instance instance :
                             services) {
-                        if(Boolean.valueOf(instance.getLabels().containsValue(id)))
+                        if (Boolean.valueOf(instance.getLabels().containsValue(id)))
                             dcService.getDefaultConnection().restartContainerCmd(instance.getId()).exec();
 
                     }
                 }
-                break;
-
-            case Get:
+            case Delete:
                 for (Environment en :
                         environments) {
                     List<Instance> services = en.getServices();
                     for (Instance instance :
                             services) {
-                        if(Boolean.valueOf(instance.getLabels().containsValue(id))){}
-                                //TODO get environment
-                                //   dcService.getDefaultConnection().restartContainerCmd(instance.getId()).exec();
+                        if (Boolean.valueOf(instance.getLabels().containsValue(id)))
+                            dcService.getDefaultConnection().removeContainerCmd(instance.getId()).exec();
+
                     }
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    public Environment getEnvironmentByID(String id) {
+        List<Environment> environments = getAll();
+        Environment environment = new Environment();
+        for (Environment en :
+                environments) {
+            List<Instance> services = en.getServices();
+            List<Instance> filteredServices = new ArrayList<>();
+            for (Instance instance :
+                    services) {
+                if (Boolean.valueOf(instance.getLabels().containsValue(id))) {
+                    filteredServices.add(instance);
+                }
+            }
+            if (!filteredServices.isEmpty())
+                environment.services(filteredServices);
+        }
+        return environment;
     }
 
     public List<Environment> getAll() {
