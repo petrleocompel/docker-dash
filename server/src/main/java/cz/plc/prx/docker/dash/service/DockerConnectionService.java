@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,7 @@ public class DockerConnectionService {
     private static final String DEFAULT_CONNECTION = "localhost";
     private Map<String, DockerClient> connections = new HashMap<>();
 
-    public void setConnectionToDB(List<DockerConnection> dc) throws IOException {
+    public void setConnectionToDB(DockerConnection dc,File configFile,File certFile) throws IOException {
         File database = new File("./connections.json");
         DB db = DBMaker
                 .fileDB(database)
@@ -36,16 +37,30 @@ public class DockerConnectionService {
                 .fileChannelEnable()
                 .make();
         ConcurrentMap mapa = db.hashMap("map").createOrOpen();
-        for (DockerConnection doc :
-                dc) {
-            mapa.put(doc.getName(), doc);
-        }
+        dc.getWithTls().setDockerCertPath(Paths.get("server/src/main/java/cz/plc/prx/docker/dash/certs/").relativize(certFile.toPath()).toString());
+        dc.getWithTls().setDockerConfig(Paths.get("server/src/main/java/cz/plc/prx/docker/dash/certs/").relativize(configFile.toPath()).toString());
+            mapa.put(dc.getName(), dc);
         db.commit();
-
         db.close();
 
     }
+    public void setConnectionToDB(DockerConnection dc) throws IOException {
+        File database = new File("./connections.json");
+        DB db = DBMaker
+                .fileDB(database)
+                .transactionEnable()
+                .closeOnJvmShutdown()
+                .fileChannelEnable()
+                .make();
+        ConcurrentMap mapa = db.hashMap("map").createOrOpen();
+            mapa.put(dc.getName(), dc);
+        db.commit();
+        db.close();
 
+    }
+    public void deleteConnectionFromDB(String connection) throws IOException {
+
+    }
     public List<DockerConnection> getConnectionFromDB() throws IOException {
         List<DockerConnection> listOfConnections = new ArrayList<>();
         File database = new File("./connections.json");

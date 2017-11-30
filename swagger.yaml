@@ -21,7 +21,7 @@ tags:
 schemes:
   - http
 paths:
-  /get-all:
+  '/get-all':
     get:
       tags:
         - Docker
@@ -37,13 +37,13 @@ paths:
             $ref: '#/definitions/Groups'
         '400':
           description: Invalid status value
-  /getDockerConnections:
+  '/connections':
     get:
       tags:
-        - Docker
+        - Connections
       summary: Get all connections
       description: Return docker connections from mapDB
-      operationId: getDockerConnections
+      operationId: connectionsGet
       produces:
         - application/json
       responses:
@@ -55,27 +55,85 @@ paths:
               $ref: '#/definitions/DockerConnection'
         '400':
           description: Invalid status value
-  /setDockerConnections:
     post:
       tags:
-        - Docker
-      summary: configure docker connection
-      operationId: updateDockerConnections
+        - Connections
+      summary: save docker connection to DB
+      operationId: connectionPost
       consumes:
-        - application/json
+        - multipart/form-data
       parameters:
-        - in: body
-          name: user
-          description: docker connection model
+        - in: formData
+          name: name
+          type: string
           required: true
-          schema:
-            $ref: '#/definitions/DockerConnection'
+        - in: formData
+          name: address
+          type: string
+          required: true
+        - in: formData
+          name: DockerTLSVerify
+          type: integer
+          required: true
+        - in: formData
+          name: DockerConfig
+          type: string
+          required: true
+        - in: formData
+          name: upfile
+          type: file
+          required: true
+          description: The file to upload.
       responses:
         '201':
           description: successfully created
         200:
           description: OK
-  /environment:
+
+  '/connections/{connection}':
+     get:
+      tags:
+        - Connections
+      summary: Get connection by "connection" id
+      description: Return docker connection with path param connection from DB
+      operationId: connectionGet
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: connection
+          description: name of selected connection
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DockerConnection'
+        '400':
+          description: Invalid status value
+     delete:
+      tags:
+        - Connections
+      summary: Delete docker connection
+      description: Delete docker connection from DB
+      operationId: connectionDelete
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: connection
+          description: name of selected connection
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: A connection with the specified Instance ID was not found.
+  '/environment':
     get:
       tags:
         - Environment
@@ -352,3 +410,5 @@ definitions:
         type: string
       DockerConfig:
         type: string
+
+
