@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import InstanceCard from "../InstanceCard";
 import Loader from '../Loader'
-import {responsr, getAll, instanceStop, instanceRestart, instanceStart} from '../api'
+import {responsr, getAll, instanceStop, instanceRestart, instanceStart, instanceDelete} from '../api'
 import {Col, Row} from "reactstrap";
+import {Link} from 'react-router-dom';
+
 
 
 class Dashboard extends React.Component {
@@ -27,6 +29,10 @@ class Dashboard extends React.Component {
 
     handleRestart = (id) => {
         instanceRestart(id);
+    };
+
+    handleDelete = (id) => {
+        instanceDelete(id);
     };
 
     handleList = (id) => {
@@ -63,6 +69,8 @@ class Dashboard extends React.Component {
                         start={() => this.props.dispatch(this.handleStart(item.id))}
                         stop={() => this.props.dispatch(this.handleStop(item.id))}
                         restart={() => this.props.dispatch(this.handleRestart(item.id))}
+                        del={() => this.props.dispatch(this.handleDelete(item.id))}
+                        instanceId={item.id}
                     /></Col>
 
 

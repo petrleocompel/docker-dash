@@ -2,6 +2,7 @@ import React, {Component} from "react"
 import PropTypes from 'prop-types'
 import {mapToCssModules} from 'reactstrap/lib/utils'
 import {ButtonDropdown, ButtonGroup, Card, CardBlock, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
+import Link from "react-router-dom/es/Link";
 
 
 const propTypes = {
@@ -9,10 +10,12 @@ const propTypes = {
     mainText: PropTypes.string,
     smallText: PropTypes.string,
     statusColor: PropTypes.string,
-    start: PropTypes.func,
-    stop: PropTypes.func,
-    restart: PropTypes.func,
+    start: PropTypes,
+    stop: PropTypes,
+    restart: PropTypes,
+    del: PropTypes,
     key: PropTypes.string,
+    instanceId: PropTypes.string,
 
 };
 
@@ -45,7 +48,7 @@ class InstanceCard extends React.Component {
 
     render() {
 
-        const{header, mainText, smallText, start, stop, restart, statusColor, key} = this.props;
+        const{header, mainText, smallText, start, stop, restart, del, statusColor, key, instanceId} = this.props;
 
         return (
             <Card className={"text-white bg-" + statusColor}>
@@ -62,10 +65,11 @@ class InstanceCard extends React.Component {
                                 <DropdownItem onClick={start}>Start</DropdownItem>
                                 <DropdownItem onClick={stop}>Stop</DropdownItem>
                                 <DropdownItem onClick={restart}>Restart</DropdownItem>
+                                <DropdownItem onClick={del}>Delete</DropdownItem>
                             </DropdownMenu>
                         </ButtonDropdown>
                     </ButtonGroup>
-                    <div className="h4 m-0">{header}</div>
+                    <Link to={`/instance/${instanceId}`}><div className="h4 m-0">{header}</div></Link>
                     <div>{mainText}</div>
                     <small className="text-muted">{smallText}</small>
                 </CardBlock>

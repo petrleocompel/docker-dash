@@ -9,6 +9,7 @@ import Footer from '../../components/Footer/';
 
 import Dashboard from '../../views/Dashboard';
 import Images from '../../views/Images';
+import InstanceDetail from "../../views/InstanceDetail";
 
 class Full extends Component {
     render() {
@@ -22,7 +23,7 @@ class Full extends Component {
                         <Container fluid>
                             <Switch>
                                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
-                                <Route path="/images" name="Images" component={Images}/>
+                                <Route path="/instance/:dockerId" component={InstanceDetail}/>
 
                                 <Redirect from="/" to="/dashboard"/>
 
