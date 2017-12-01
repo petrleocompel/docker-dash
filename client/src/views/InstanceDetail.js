@@ -24,10 +24,9 @@ class InstanceDetail extends React.Component {
         const {match: {params}} = this.props;
 
 
-        responsr(instance(params.dockerId)).then((data) => {
+        instance(params.dockerId).then((data) => {
             this.setState({instance: data});
 
-            console.log(this.state.instance)
         })
     }
 //TODO vzhled
@@ -45,10 +44,12 @@ class InstanceDetail extends React.Component {
                     <CardSubtitle>Status: {this.state.instance.status}</CardSubtitle>
                     <CardText>
                         <Row><Col>Instance id: {this.state.instance.id}</Col></Row>
-                        <Row><Col>Instance image: {this.state.instance.image}</Col></Row>
+                        <Row><Col>Image: {this.state.instance.image}</Col></Row>
+                        <Row><Col>Image id: {this.state.instance.imageId}</Col></Row>
                         <Row><Col>Created: {this.state.instance.created}</Col></Row>
                         <Row><Col>Path: {this.state.instance.HostnamePath}</Col></Row>
                         <Row><Col>Domain name: {this.state.instance.Domainname}</Col></Row>
+                        <Row><Col>Driver: {this.state.instance.driver}</Col></Row>
                         <Row>
                             <Col align="center">
                                 <Button onClick={instanceStart(this.state.instance.id)} color="success">Start</Button>{' '}

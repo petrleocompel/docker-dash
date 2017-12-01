@@ -10,10 +10,10 @@ const propTypes = {
     mainText: PropTypes.string,
     smallText: PropTypes.string,
     statusColor: PropTypes.string,
-    start: PropTypes,
-    stop: PropTypes,
-    restart: PropTypes,
-    del: PropTypes,
+    start: PropTypes.function,
+    stop: PropTypes.function,
+    restart: PropTypes.function,
+    del: PropTypes.function,
     key: PropTypes.string,
     instanceId: PropTypes.string,
 
@@ -45,10 +45,16 @@ class InstanceCard extends React.Component {
         });
     }
 
+    test() {
+        this.props.start();
+        this.props.rel();
+    }
+
 
     render() {
 
         const{header, mainText, smallText, start, stop, restart, del, statusColor, key, instanceId} = this.props;
+
 
         return (
             <Card className={"text-white bg-" + statusColor}>

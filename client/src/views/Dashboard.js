@@ -3,52 +3,52 @@ import InstanceCard from "../InstanceCard";
 import Loader from '../Loader'
 import {responsr, getAll, instanceStop, instanceRestart, instanceStart, instanceDelete} from '../api'
 import {Col, Row} from "reactstrap";
-import {Link} from 'react-router-dom';
-
 
 
 class Dashboard extends React.Component {
 
-    state = {images: null};
+    state = {others: null};
 
-    componentDidMount() {
-        responsr(getAll()).then((data) => {
-            this.setState({images: data.others});
+    fetchData(){
+        getAll().then((data) => {
+            this.setState({others: data.others});
 
 
         })
     }
 
+    componentDidMount() {
+        this.fetchData();
+    }
+
     handleStop = (id) => {
-        instanceStop(id);
+        instanceStop(id).then(() => {this.fetchData()});
+
     };
 
     handleStart = (id) => {
-        instanceStart(id);
+        instanceStart(id).then(() => {this.fetchData()});
     };
 
     handleRestart = (id) => {
-        instanceRestart(id);
+        instanceRestart(id).then(() => {this.fetchData()});
     };
 
     handleDelete = (id) => {
-        instanceDelete(id);
+        instanceDelete(id).then(() => {this.fetchData()});
     };
 
-    handleList = (id) => {
-        alert('Listing item TODO')
-    };
 
     render() {
 
 
-        if (!this.state.images) {
+        if (!this.state.others) {
             return <Loader/>
 
         }
 
         return (
-            <Row> {this.state.images.map((item, index) => {
+            <Row> {this.state.others.map((item, index) => {
 
 
                 let status;
