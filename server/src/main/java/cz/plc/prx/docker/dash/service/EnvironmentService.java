@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -84,6 +87,12 @@ public class EnvironmentService {
     }
 
     public Environment getEnvironmentByID(String id) {
+        try {
+
+            dcService.getConnectionFromDB();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         List<Environment> environments = getAll();
         Environment environment = new Environment();
         for (Environment en :
@@ -110,7 +119,6 @@ public class EnvironmentService {
 
         for (Container element : servicesContainers) {
             InspectContainerResponse exec = dcService.getDefaultConnection().inspectContainerCmd(element.getId()).exec();
-
             boolean whitelisted = (!exec.getConfig().getLabels().containsKey(LABEL_BLACKLIST) || !Boolean.valueOf(exec.getConfig().getLabels().get(LABEL_BLACKLIST)));
             if (whitelisted) {
 
@@ -146,9 +154,5 @@ public class EnvironmentService {
 
 
         return environments;
-    }
-
-    public void listByProjectName() {
-
     }
 }

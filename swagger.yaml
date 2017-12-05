@@ -55,6 +55,26 @@ paths:
               $ref: '#/definitions/DockerConnection'
         '400':
           description: Invalid status value
+  /setDockerConnections:
+    post:
+      tags:
+        - Docker
+      summary: configure docker connection
+      operationId: updateDockerConnections
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: docker connection model
+          required: true
+          schema:
+            $ref: '#/definitions/DockerConnection'
+      responses:
+        '201':
+          description: successfully created
+        200:
+          description: OK
   /environment:
     get:
       tags:
@@ -316,11 +336,19 @@ definitions:
   DockerConnection:
     type: object
     properties:
-      Protocol:
+      name:
         type: string
       Address:
         type: string
-      Port:
-        type: string
       WithTls:
-        type: boolean
+        $ref: '#/definitions/TLSConfiguration'
+
+  TLSConfiguration:
+    type: object
+    properties:
+      DockerTLSVerify:
+        type: integer
+      DockerCertPath:
+        type: string
+      DockerConfig:
+        type: string

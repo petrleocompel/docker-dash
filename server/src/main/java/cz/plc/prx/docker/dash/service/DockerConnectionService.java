@@ -6,13 +6,17 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import cz.plc.prx.docker.dash.model.DockerConnection;
 import org.apache.commons.lang.SystemUtils;
-import org.mapdb.*;
-import org.mapdb.serializer.SerializerArrayTuple;
+import org.mapdb.DB;
+import org.mapdb.DBMaker;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Docker Connection service and holder
@@ -22,12 +26,8 @@ public class DockerConnectionService {
 
     private static final String DEFAULT_CONNECTION = "localhost";
     private Map<String, DockerClient> connections = new HashMap<>();
-    private static String protocol;
-    private static String address;
-    private static String socket;
 
-
-    public void setConnectionToDB() throws IOException {
+    public void setConnectionToDB(List<DockerConnection> dc) throws IOException {
         File database = new File("./connections.json");
         DB db = DBMaker
                 .fileDB(database)
@@ -35,14 +35,11 @@ public class DockerConnectionService {
                 .closeOnJvmShutdown()
                 .fileChannelEnable()
                 .make();
-        HTreeMap<String, Object[]> map =
-                db.hashMap("connections")
-                        .keySerializer(Serializer.STRING)
-                        .valueSerializer(new SerializerArrayTuple(Serializer.STRING, Serializer.STRING, Serializer.STRING, Serializer.BOOLEAN))
-                        .createOrOpen();
-
-        map.put("unix", new Object[]{"unix", "/var/run", "docker.sock", false});
-        map.put("windows", new Object[]{"tcp", "localhost", "2375", true});
+        ConcurrentMap mapa = db.hashMap("map").createOrOpen();
+        for (DockerConnection doc :
+                dc) {
+            mapa.put(doc.getName(), doc);
+        }
         db.commit();
 
         db.close();
@@ -58,22 +55,9 @@ public class DockerConnectionService {
                 .closeOnJvmShutdown()
                 .fileChannelEnable()
                 .make();
-        HTreeMap<String, Object[]> map =
-                db.hashMap("connections")
-                        .keySerializer(Serializer.STRING)
-                        .valueSerializer(new SerializerArrayTuple(Serializer.STRING, Serializer.STRING, Serializer.STRING, Serializer.BOOLEAN))
-                        .createOrOpen();
-
-        Collection<Object[]> object = map.getValues();
-
-        for (Object[] index :
-                object) {
-            DockerConnection wdh = new DockerConnection();
-            wdh.setProtocol((String) index[0]);
-            wdh.setAddress((String) index[1]);
-            wdh.setPort((String) index[2]);
-            wdh.setWithTls((Boolean) index[3]);
-            listOfConnections.add(wdh);
+        ConcurrentMap mapa = db.hashMap("map").createOrOpen();
+        for (Object entry : mapa.values()) {
+            listOfConnections.add((DockerConnection) entry);
         }
         db.close();
         return listOfConnections;
