@@ -1,8 +1,8 @@
 import React, {Component} from "react"
 import PropTypes from 'prop-types'
-import {mapToCssModules} from 'reactstrap/lib/utils'
 import {ButtonDropdown, ButtonGroup, Card, CardBlock, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import Link from "react-router-dom/es/Link";
+import {instanceStop, instanceRestart, instanceStart, instanceDelete} from './api'
 
 
 const propTypes = {
@@ -10,12 +10,9 @@ const propTypes = {
     mainText: PropTypes.string,
     smallText: PropTypes.string,
     statusColor: PropTypes.string,
-    start: PropTypes.function,
-    stop: PropTypes.function,
-    restart: PropTypes.function,
-    del: PropTypes.function,
     key: PropTypes.string,
     instanceId: PropTypes.string,
+    fetchAll: PropTypes.func,
 
 };
 
@@ -45,15 +42,28 @@ class InstanceCard extends React.Component {
         });
     }
 
-    test() {
-        this.props.start();
-        this.props.rel();
-    }
+
+    handleStop = (id) => {
+        instanceStop(id).then(() => {this.props.fetchAll()});
+
+    };
+
+    handleStart = (id) => {
+        instanceStart(id).then(() => {this.props.fetchAll()});
+    };
+
+    handleRestart = (id) => {
+        instanceRestart(id).then(() => {this.props.fetchAll()});
+    };
+
+    handleDelete = (id) => {
+        instanceDelete(id).then(() => {this.props.fetchAll()});
+    };
 
 
     render() {
 
-        const{header, mainText, smallText, start, stop, restart, del, statusColor, key, instanceId} = this.props;
+        const{header, mainText, smallText, statusColor, key, instanceId} = this.props;
 
 
         return (
@@ -68,10 +78,10 @@ class InstanceCard extends React.Component {
                                 <i className="icon-settings"></i>
                             </DropdownToggle>
                             <DropdownMenu className={this.state.card1 ? "show" : ""} right>
-                                <DropdownItem onClick={start}>Start</DropdownItem>
-                                <DropdownItem onClick={stop}>Stop</DropdownItem>
-                                <DropdownItem onClick={restart}>Restart</DropdownItem>
-                                <DropdownItem onClick={del}>Delete</DropdownItem>
+                                <DropdownItem onClick={this.handleStart(instanceId)}>Start</DropdownItem>
+                                <DropdownItem onClick={this.handleStop(instanceId)}>Stop</DropdownItem>
+                                <DropdownItem onClick={this.handleRestart(instanceId)}>Restart</DropdownItem>
+                                <DropdownItem onClick={this.handleDelete(instanceId)}>Delete</DropdownItem>
                             </DropdownMenu>
                         </ButtonDropdown>
                     </ButtonGroup>

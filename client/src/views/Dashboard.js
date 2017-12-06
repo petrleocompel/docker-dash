@@ -1,82 +1,75 @@
 import React, {Component} from 'react'
-import InstanceCard from "../InstanceCard";
 import Loader from '../Loader'
-import {responsr, getAll, instanceStop, instanceRestart, instanceStart, instanceDelete} from '../api'
+import {getAll} from '../api'
 import {Col, Row} from "reactstrap";
+import ServiceCard from "../ServiceCard";
 
+const Fragment = React.Fragment;
 
 class Dashboard extends React.Component {
 
-    state = {others: null};
+    state = {environments: null};
 
-    fetchData(){
+    fetchAll(){
         getAll().then((data) => {
-            this.setState({others: data.others});
+            this.setState({data});
 
 
         })
     }
 
     componentDidMount() {
-        this.fetchData();
+        this.fetchAll();
     }
-
-    handleStop = (id) => {
-        instanceStop(id).then(() => {this.fetchData()});
-
-    };
-
-    handleStart = (id) => {
-        instanceStart(id).then(() => {this.fetchData()});
-    };
-
-    handleRestart = (id) => {
-        instanceRestart(id).then(() => {this.fetchData()});
-    };
-
-    handleDelete = (id) => {
-        instanceDelete(id).then(() => {this.fetchData()});
-    };
 
 
     render() {
 
 
-        if (!this.state.others) {
+        if (!this.state.data) {
             return <Loader/>
 
         }
 
         return (
-            <Row> {this.state.others.map((item, index) => {
+            <Fragment>
+
+            <Row> {this.state.data.environments.map((item, index) => {
 
 
-                let status;
+               return( <Col xs="6" sm="12">
+                            <ServiceCard
+                                key={index}
+                                name={item.image}
+                                instances={item.services}
+                                fetchAll={this.fetchAll()}
+                            />
+                       </Col>
 
-                if (item.status.indexOf("Up") !== -1) {
-                    status = 'success';
-                }
-                else if (item.status.indexOf("Exited") !== -1) {
-                    status = 'danger';
-                }
-                return <Col xs="6" sm="4">
-                    <InstanceCard
-                        key={index}
-                        statusColor={status}
-                        header={item.name}
-                        mainText={item.image}
-                        smallText={item.status}
-                        start={() => this.props.dispatch(this.handleStart(item.id))}
-                        stop={() => this.props.dispatch(this.handleStop(item.id))}
-                        restart={() => this.props.dispatch(this.handleRestart(item.id))}
-                        del={() => this.props.dispatch(this.handleDelete(item.id))}
-                        instanceId={item.id}
-                    /></Col>
+               )
+
+
 
 
             })}
-            </Row>)
+            </Row>
 
+
+            <Row>
+                <Col>
+                    <h2>Others</h2>
+                    <ServiceCard
+                    name="others"
+                    instances={this.state.data.others}
+                    fetchAll={this.fetchAll()}
+                    />
+                </Col>
+            </Row>
+
+
+            </Fragment>
+
+        )
     }
 }
 
