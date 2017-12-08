@@ -2,31 +2,27 @@ package cz.plc.prx.docker.dash.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
- * WithDockerHost
+ * DockerConnection
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-11-02T07:21:29.987Z")
 
-public class WithDockerHost   {
+public class DockerConnection {
   @JsonProperty("Protocol")
   private String protocol = null;
 
-  @JsonProperty("Adress")
-  private String adress = null;
+  @JsonProperty("Address")
+  private String address = null;
 
   @JsonProperty("Port")
-  private Integer port = null;
+  private String port = null;
 
   @JsonProperty("WithTls")
   private Boolean withTls = null;
 
-  public WithDockerHost protocol(String protocol) {
+  public DockerConnection protocol(String protocol) {
     this.protocol = protocol;
     return this;
   }
@@ -46,27 +42,27 @@ public class WithDockerHost   {
     this.protocol = protocol;
   }
 
-  public WithDockerHost adress(String adress) {
-    this.adress = adress;
+  public DockerConnection address(String address) {
+    this.address = address;
     return this;
   }
 
    /**
-   * Get adress
-   * @return adress
+   * Get address
+   * @return address
   **/
   @ApiModelProperty(value = "")
 
 
-  public String getAdress() {
-    return adress;
+  public String getAddress() {
+    return address;
   }
 
-  public void setAdress(String adress) {
-    this.adress = adress;
+  public void setAddress(String address) {
+    this.address = address;
   }
 
-  public WithDockerHost port(Integer port) {
+  public DockerConnection port(String port) {
     this.port = port;
     return this;
   }
@@ -78,15 +74,15 @@ public class WithDockerHost   {
   @ApiModelProperty(value = "")
 
 
-  public Integer getPort() {
+  public String getPort() {
     return port;
   }
 
-  public void setPort(Integer port) {
+  public void setPort(String port) {
     this.port = port;
   }
 
-  public WithDockerHost withTls(Boolean withTls) {
+  public DockerConnection withTls(Boolean withTls) {
     this.withTls = withTls;
     return this;
   }
@@ -115,25 +111,25 @@ public class WithDockerHost   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    WithDockerHost withDockerHost = (WithDockerHost) o;
-    return Objects.equals(this.protocol, withDockerHost.protocol) &&
-        Objects.equals(this.adress, withDockerHost.adress) &&
-        Objects.equals(this.port, withDockerHost.port) &&
-        Objects.equals(this.withTls, withDockerHost.withTls);
+    DockerConnection dockerConnection = (DockerConnection) o;
+    return Objects.equals(this.protocol, dockerConnection.protocol) &&
+        Objects.equals(this.address, dockerConnection.address) &&
+        Objects.equals(this.port, dockerConnection.port) &&
+        Objects.equals(this.withTls, dockerConnection.withTls);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(protocol, adress, port, withTls);
+    return Objects.hash(protocol, address, port, withTls);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class WithDockerHost {\n");
+    sb.append("class DockerConnection {\n");
     
     sb.append("    protocol: ").append(toIndentedString(protocol)).append("\n");
-    sb.append("    adress: ").append(toIndentedString(adress)).append("\n");
+    sb.append("    address: ").append(toIndentedString(address)).append("\n");
     sb.append("    port: ").append(toIndentedString(port)).append("\n");
     sb.append("    withTls: ").append(toIndentedString(withTls)).append("\n");
     sb.append("}");

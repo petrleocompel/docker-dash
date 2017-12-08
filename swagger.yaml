@@ -4,22 +4,20 @@ info:
   version: 1.0.0
   title: Docker dashboard
   contact:
-     name: Docker dash team
-     url: 'https://github.com/petrleocompel/docker-dash/issues'
+    name: Docker dash team
+    url: 'https://github.com/petrleocompel/docker-dash/issues'
   termsOfService: 'http://swagger.io/terms/'
 host: 'localhost:4000'
 basePath: /api
-
 tags:
-  - name: Readme 
+  - name: Readme
     externalDocs:
-      description: "link"
-      url: 'https://github.com/petrleocompel/docker-dash/blob/master/README.md' 
+      description: link
+      url: 'https://github.com/petrleocompel/docker-dash/blob/master/README.md'
   - name: docker-dash
     externalDocs:
       description: Find out more
       url: 'https://github.com/petrleocompel/docker-dash'
-     
 schemes:
   - http
 paths:
@@ -28,7 +26,7 @@ paths:
       tags:
         - Docker
       summary: Get all groups
-      description: Return docker containers, compose
+      description: 'Return docker containers, compose'
       operationId: getAll
       produces:
         - application/json
@@ -39,12 +37,30 @@ paths:
             $ref: '#/definitions/Groups'
         '400':
           description: Invalid status value
+  /getDockerConnections:
+    get:
+      tags:
+        - Docker
+      summary: Get all connections
+      description: Return docker connections from mapDB
+      operationId: getDockerConnections
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DockerConnection'
+        '400':
+          description: Invalid status value
   /environment:
     get:
       tags:
         - Environment
       summary: Get the services of the group named Environment
-      description: Returns array of containers 
+      description: Returns array of containers
       responses:
         '200':
           description: Successful operation
@@ -57,7 +73,7 @@ paths:
       tags:
         - Environment
       summary: Stop a service selected by its ID
-      description:  ""  
+      description: ''
       operationId: environmentStop
       produces:
         - application/json
@@ -75,7 +91,7 @@ paths:
       tags:
         - Environment
       summary: Start a service selected by its ID
-      description:  "" 
+      description: ''
       operationId: environmentStart
       produces:
         - application/json
@@ -93,7 +109,7 @@ paths:
       tags:
         - Environment
       summary: Restart a service selected by its ID
-      description:  ""  
+      description: ''
       operationId: environmentRestart
       produces:
         - application/json
@@ -111,7 +127,7 @@ paths:
       tags:
         - Instance
       summary: Get an instance selected by its ID
-      description:  ""  
+      description: ''
       operationId: instanceGet
       produces:
         - application/json
@@ -132,7 +148,7 @@ paths:
       tags:
         - Instance
       summary: Delete selected instance by its ID
-      description:  ""   
+      description: ''
       operationId: instanceDelete
       produces:
         - application/json
@@ -150,7 +166,7 @@ paths:
       tags:
         - Instance
       summary: Stop an instance selected by its ID
-      description:  ""  
+      description: ''
       operationId: instanceStop
       produces:
         - application/json
@@ -168,7 +184,7 @@ paths:
       tags:
         - Instance
       summary: Start an instance selected by its ID
-      description:  ""  
+      description: ''
       operationId: instanceStart
       produces:
         - application/json
@@ -186,7 +202,7 @@ paths:
       tags:
         - Instance
       summary: Restart an instance selected by its ID
-      description:  ""  
+      description: ''
       operationId: instanceRestart
       produces:
         - application/json
@@ -236,15 +252,13 @@ definitions:
       labels:
         type: object
         additionalProperties:
-            type: string
-              
+          type: string
   InstanceExt:
     allOf:
       - $ref: '#/definitions/Instance'
       - properties:
-          
           Config:
-            $ref: '#/definitions/ContainerConf'      
+            $ref: '#/definitions/ContainerConf'
           Driver:
             type: string
           ExecIDs:
@@ -277,7 +291,7 @@ definitions:
       Env:
         type: array
         items:
-          type: string   
+          type: string
       Hostname:
         type: string
       Labels:
@@ -288,19 +302,18 @@ definitions:
     type: object
     properties:
       Name:
-        type: string   
+        type: string
       Source:
-        type: string   
+        type: string
       Destination:
-        type: string   
+        type: string
       Driver:
-        type: string   
+        type: string
       Mode:
-        type: string   
+        type: string
       RW:
         type: boolean
-        
-  WithDockerHost:
+  DockerConnection:
     type: object
     properties:
       Protocol:
@@ -308,6 +321,6 @@ definitions:
       Address:
         type: string
       Port:
-        type: integer
+        type: string
       WithTls:
         type: boolean

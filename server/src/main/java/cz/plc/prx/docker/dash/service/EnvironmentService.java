@@ -7,6 +7,7 @@ import cz.plc.prx.docker.dash.model.Instance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,6 @@ public class EnvironmentService {
         Map<String, List<Container>> services = new HashMap<String, List<Container>>();
         List<Container> servicesContainers = containerList.stream().filter(line -> line.getLabels().containsKey(COMPOSE_PROJECT))
                 .collect(Collectors.toList());
-
 
         for (Container element : servicesContainers) {
             InspectContainerResponse exec = dcService.getDefaultConnection().inspectContainerCmd(element.getId()).exec();
@@ -48,7 +48,6 @@ public class EnvironmentService {
 
                 }
             }
-
         }
 
         List<Environment> environments = new ArrayList<Environment>();
@@ -68,5 +67,7 @@ public class EnvironmentService {
 
         return environments;
     }
+    public void listByProjectName(){
 
+    }
 }
