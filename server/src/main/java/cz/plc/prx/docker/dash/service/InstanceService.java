@@ -24,8 +24,12 @@ public class InstanceService {
     ObjectFactory objectFactory;
 
     public List<Instance> getAll() {
-        List<Container> containerList = dcService.getDefaultConnection().listContainersCmd().exec();
-        System.out.println(containerList);
+        List<Container> containerList = dcService.getDefaultConnection().listContainersCmd().withShowAll(true).exec();
+        List<Container> runningContainers = dcService.getDefaultConnection().listContainersCmd().exec();
+        for (int i = 0; i < runningContainers.size(); i++) {
+            containerList.add(runningContainers.get(i));
+        }
+
         return objectFactory.convert(containerList, Instance.class);
     }
 

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Api(value = "get-all", description = "the get-all API")
 public interface GetAllApi {
 
-    @ApiOperation(value = "Get all groups", notes = "Return docker groups and its content such as group named environments containing services", response = Groups.class, tags={ "Docker", })
+    @ApiOperation(value = "Get all groups", notes = "Return docker containers, compose", response = Groups.class, tags={ "Docker", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Groups.class),
         @ApiResponse(code = 400, message = "Invalid status value", response = Void.class) })
