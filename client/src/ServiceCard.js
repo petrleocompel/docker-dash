@@ -35,9 +35,8 @@ class ServiceCard extends React.Component {
                 else if (item.status.indexOf("Exited") !== -1) {
                     status = 'danger';
                 }
-                return <Col xs="6" sm="4">
+                return <Col xs="6" sm="4" key={index}>
                     <InstanceCard
-                        key={index}
                         statusColor={status}
                         header={item.name}
                         mainText={item.image}

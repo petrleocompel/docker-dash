@@ -8,20 +8,21 @@ const Fragment = React.Fragment;
 
 class Dashboard extends React.Component {
 
-    state = {environments: null};
+    state = {
+        environments: null
+    };
 
-    fetchAll(){
+    componentDidMount() {
+        this.fetchAll();
+    }
+
+    fetchAll = () => {
         getAll().then((data) => {
             this.setState({data});
 
 
         })
     }
-
-    componentDidMount() {
-        this.fetchAll();
-    }
-
 
     render() {
 
@@ -34,39 +35,30 @@ class Dashboard extends React.Component {
         return (
             <Fragment>
 
-            <Row> {this.state.data.environments.map((item, index) => {
+                <Row> {this.state.data.environments.map((item, index) => {
 
 
-               return( <Col xs="6" sm="12">
+                    return (<Col xs="6" sm="12" key={index}>
                             <ServiceCard
-                                key={index}
                                 name={item.image}
                                 instances={item.services}
                                 fetchAll={this.fetchAll}
                             />
-                       </Col>
+                        </Col>
 
-               )
-
-
-
-
-            })}
-            </Row>
-
-
-            <Row>
-                <Col>
-                    <h2>Others</h2>
-                    <ServiceCard
-                    name="others"
-                    instances={this.state.data.others}
-                    fetchAll={this.fetchAll}
-                    />
-                </Col>
-            </Row>
-
-
+                    )
+                })}
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Others</h2>
+                        <ServiceCard
+                            name="others"
+                            instances={this.state.data.others}
+                            fetchAll={this.fetchAll}
+                        />
+                    </Col>
+                </Row>
             </Fragment>
 
         )
