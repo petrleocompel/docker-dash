@@ -42,7 +42,7 @@ class Dashboard extends React.Component {
                                 key={index}
                                 name={item.image}
                                 instances={item.services}
-                                fetchAll={this.fetchAll()}
+                                fetchAll={this.fetchAll}
                             />
                        </Col>
 
@@ -61,7 +61,7 @@ class Dashboard extends React.Component {
                     <ServiceCard
                     name="others"
                     instances={this.state.data.others}
-                    fetchAll={this.fetchAll()}
+                    fetchAll={this.fetchAll}
                     />
                 </Col>
             </Row>

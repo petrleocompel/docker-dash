@@ -65,7 +65,6 @@ class InstanceCard extends React.Component {
 
         const{header, mainText, smallText, statusColor, key, instanceId} = this.props;
 
-
         return (
             <Card className={"text-white bg-" + statusColor}>
                 <CardBlock className="card-body pb-0">
@@ -75,7 +74,7 @@ class InstanceCard extends React.Component {
                                             this.setState({card1: !this.state.card1});
                                         }}>
                             <DropdownToggle caret className="p-0" color="transparent">
-                                <i className="icon-settings"></i>
+                                <i className="icon-settings"> </i>
                             </DropdownToggle>
                             <DropdownMenu className={this.state.card1 ? "show" : ""} right>
                                 <DropdownItem onClick={this.handleStart(instanceId)}>Start</DropdownItem>
@@ -85,7 +84,7 @@ class InstanceCard extends React.Component {
                             </DropdownMenu>
                         </ButtonDropdown>
                     </ButtonGroup>
-                    <Link to={`/instance/${instanceId}`}><div className="h4 m-0">{header}</div></Link>
+                    <Link to={`/instance/${instanceId}`} style={{color: 'white'}}><div className="h4 m-0">{header}</div></Link>
                     <div>{mainText}</div>
                     <small className="text-muted">{smallText}</small>
                 </CardBlock>

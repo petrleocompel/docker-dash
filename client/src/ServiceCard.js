@@ -18,7 +18,6 @@ class ServiceCard extends React.Component {
 
     render() {
 
-
         if (!this.props.instances) {
             return <Loader/>
 

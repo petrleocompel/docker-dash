@@ -47,7 +47,7 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loaders: [ 'happypack/loader?id=jsx' ]
+                loader: 'happypack/loader?id=jsx'
             },
             {
                 test: /\.html$/,

@@ -16,7 +16,6 @@ import '../scss/style.scss'
 
 // Containers
 import Full from './containers/Full/'
-import InstanceDetail from "./views/InstanceDetail";
 
 const history = createBrowserHistory();
 
