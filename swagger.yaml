@@ -21,7 +21,7 @@ tags:
 schemes:
   - http
 paths:
-  '/get-all':
+  '/connections/{connection}/get-all':
     get:
       tags:
         - Docker
@@ -30,6 +30,11 @@ paths:
       operationId: getAll
       produces:
         - application/json
+      parameters:
+        - in: path
+          name: connection
+          type: string
+          required: true
       responses:
         '200':
           description: successful operation
@@ -63,6 +68,7 @@ paths:
       consumes:
         - multipart/form-data
       parameters:
+
         - in: formData
           name: name
           type: string
@@ -72,17 +78,21 @@ paths:
           type: string
           required: true
         - in: formData
-          name: DockerTLSVerify
-          type: integer
-          required: true
-        - in: formData
-          name: DockerConfig
+          name: workdir
           type: string
           required: true
         - in: formData
+          name: dockerTLSVerify
+          type: integer
+          required: true
+        - in: formData
+          name: dockerConfig
+          type: string
+          required: false
+        - in: formData
           name: upfile
           type: file
-          required: true
+          required: false
           description: The file to upload.
       responses:
         '201':
@@ -133,12 +143,17 @@ paths:
           description: successful operation
         '404':
           description: A connection with the specified Instance ID was not found.
-  '/environment':
+  '/connections/{connection}/environment':
     get:
       tags:
         - Environment
       summary: Get the services of the group named Environment
       description: Returns array of containers
+      parameters:
+        - in: path
+          name: connection
+          type: string
+          required: true
       responses:
         '200':
           description: Successful operation
@@ -146,7 +161,7 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Environment'
-  '/environment/{id}/stop':
+  '/connections/{connection}/environment/{id}/stop':
     post:
       tags:
         - Environment
@@ -161,10 +176,14 @@ paths:
           description: name of selected Environment
           required: true
           type: string
+        - in: path
+          name: connection
+          type: string
+          required: true
       responses:
         '200':
           description: successful operation
-  '/environment/{id}/start':
+  '/connections/{connection}/environment/{id}/start':
     post:
       tags:
         - Environment
@@ -179,10 +198,14 @@ paths:
           description: name of selected Environment
           required: true
           type: string
+        - in: path
+          name: connection
+          type: string
+          required: true
       responses:
         '200':
           description: successful operation
-  '/environment/{id}/restart':
+  '/connections/{connection}/environment/{id}/restart':
     post:
       tags:
         - Environment
@@ -197,10 +220,14 @@ paths:
           description: name of selected Environment
           required: true
           type: string
+        - in: path
+          name: connection
+          type: string
+          required: true
       responses:
         '200':
           description: successful operation
-  '/instance/{id}':
+  '/connections/{connection}/instance/{id}':
     get:
       tags:
         - Instance
@@ -215,6 +242,10 @@ paths:
           description: name of selected Instance
           required: true
           type: string
+        - in: path
+          name: connection
+          type: string
+          required: true
       responses:
         '200':
           description: successful operation
@@ -236,10 +267,14 @@ paths:
           description: name of selected Instance
           required: true
           type: string
+        - in: path
+          name: connection
+          type: string
+          required: true
       responses:
         '200':
           description: successful operation
-  '/instance/{id}/stop':
+  '/connections/{connection}/instance/{id}/stop':
     post:
       tags:
         - Instance
@@ -254,10 +289,14 @@ paths:
           description: name of selected container
           required: true
           type: string
+        - in: path
+          name: connection
+          type: string
+          required: true
       responses:
         '200':
           description: successful operation
-  '/instance/{id}/start':
+  '/connections/{connection}/instance/{id}/start':
     post:
       tags:
         - Instance
@@ -272,10 +311,14 @@ paths:
           description: name of selected container
           required: true
           type: string
+        - in: path
+          name: connection
+          type: string
+          required: true
       responses:
         '200':
           description: successful operation
-  '/instance/{id}/restart':
+  '/connections/{connection}/instance/{id}/restart':
     post:
       tags:
         - Instance
@@ -290,6 +333,10 @@ paths:
           description: name of selected container
           required: true
           type: string
+        - in: path
+          name: connection
+          type: string
+          required: true
       responses:
         '200':
           description: successful operation
