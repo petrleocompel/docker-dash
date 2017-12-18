@@ -13,10 +13,8 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -28,8 +26,8 @@ public class DockerConnectionService {
     private static final String DEFAULT_CONNECTION = "localhost";
     private Map<String, DockerClient> connections = new HashMap<>();
 
-    public void setConnectionToDB(DockerConnection dc,File configFile,File certFile) throws IOException {
-        File database = new File("./connections.json");
+    public void setConnectionToDB(DockerConnection dc, File configFile, File certFile) throws IOException {
+        File database = new File("./connections.db");
         DB db = DBMaker
                 .fileDB(database)
                 .transactionEnable()
@@ -37,15 +35,16 @@ public class DockerConnectionService {
                 .fileChannelEnable()
                 .make();
         ConcurrentMap mapa = db.hashMap("map").createOrOpen();
-        dc.getWithTls().setDockerCertPath(Paths.get("server/src/main/java/cz/plc/prx/docker/dash/certs/").relativize(certFile.toPath()).toString());
-        dc.getWithTls().setDockerConfig(Paths.get("server/src/main/java/cz/plc/prx/docker/dash/certs/").relativize(configFile.toPath()).toString());
-            mapa.put(dc.getName(), dc);
+        dc.getWithTls().setDockerCertPath(Paths.get("server/certs/").relativize(certFile.toPath()).toString());
+        dc.getWithTls().setDockerConfig(Paths.get("server/certs/").relativize(configFile.toPath()).toString());
+        mapa.put(dc.getName(), dc);
         db.commit();
         db.close();
 
     }
+
     public void setConnectionToDB(DockerConnection dc) throws IOException {
-        File database = new File("./connections.json");
+        File database = new File("./connections.db");
         DB db = DBMaker
                 .fileDB(database)
                 .transactionEnable()
@@ -53,17 +52,19 @@ public class DockerConnectionService {
                 .fileChannelEnable()
                 .make();
         ConcurrentMap mapa = db.hashMap("map").createOrOpen();
-            mapa.put(dc.getName(), dc);
+        mapa.put(UUID.randomUUID(), dc);
         db.commit();
         db.close();
 
     }
-    public void deleteConnectionFromDB(String connection) throws IOException {
+
+    public void deleteConnectionFromDB(UUID connection) throws IOException {
 
     }
-    public List<DockerConnection> getConnectionFromDB() throws IOException {
-        List<DockerConnection> listOfConnections = new ArrayList<>();
-        File database = new File("./connections.json");
+
+    public Map<UUID, DockerConnection> getConnectionFromDB() throws IOException {
+        Map<UUID, DockerConnection> listOfConnections = new HashMap<>();
+        File database = new File("./connections.db");
         DB db = DBMaker
                 .fileDB(database)
                 .transactionEnable()
@@ -71,11 +72,76 @@ public class DockerConnectionService {
                 .fileChannelEnable()
                 .make();
         ConcurrentMap mapa = db.hashMap("map").createOrOpen();
-        for (Object entry : mapa.values()) {
-            listOfConnections.add((DockerConnection) entry);
-        }
+        mapa.forEach((uuid, connection) -> {
+            listOfConnections.put((UUID) uuid, (DockerConnection) connection);
+        });
         db.close();
         return listOfConnections;
+
+    }
+
+    public DockerClient getConnection(UUID connection) {
+        File database = new File("./connections.db");
+        DB db = DBMaker
+                .fileDB(database)
+                .transactionEnable()
+                .closeOnJvmShutdown()
+                .fileChannelEnable()
+                .make();
+        ConcurrentMap mapa = db.hashMap("map").createOrOpen();
+//        ConcurrentHashMap map = (ConcurrentHashMap) mapa;
+        DockerConnection dconnection = (DockerConnection) mapa.get(connection);
+        /*map.search(1, (key, value) -> {
+            if (key.equals(connection)) {
+                return value;
+            }
+            return null;
+        });*/
+
+        DockerClient dc = null;
+        if (dconnection.getWithTls() != null) {
+            if (dconnection.getWithTls().getDockerTLSVerify().equals("1") & !dconnection.getWithTls().getDockerCertPath().isEmpty() & !dconnection.getWithTls().getDockerConfig().isEmpty()) {
+                DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
+                        .withDockerHost(dconnection.getAddress())
+                        .withDockerTlsVerify(true)
+                        .withDockerTlsVerify(dconnection.getWithTls().getDockerTLSVerify().toString())
+                        .withDockerCertPath(dconnection.getWithTls().getDockerCertPath())
+                        .withDockerConfig(dconnection.getWithTls().getDockerConfig())
+                        .build();
+
+                dc = DockerClientBuilder.getInstance(config).build();
+            }
+        } else {
+            DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
+                    .withDockerHost(dconnection.getAddress())
+                    .build();
+            dc = DockerClientBuilder.getInstance(config).build();
+        }
+        db.close();
+        return dc;
+    }
+
+    public DockerConnection getConnectionFromDB(UUID connection) throws IOException {
+        DockerConnection dockerConnection = new DockerConnection();
+        File database = new File("./connections.db");
+        DB db = DBMaker
+                .fileDB(database)
+                .transactionEnable()
+                .closeOnJvmShutdown()
+                .fileChannelEnable()
+                .make();
+        ConcurrentMap mapa = db.hashMap("map").createOrOpen();
+        dockerConnection = (DockerConnection) mapa.getOrDefault(connection, null);
+
+        /*if(mapa.keySet().contains(connection)){
+
+        }
+        for (Object entry : mapa.values()) {
+
+
+        }*/
+        db.close();
+        return dockerConnection;
 
     }
 

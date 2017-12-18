@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,8 +29,8 @@ public class EnvironmentService {
     @Autowired
     ObjectFactory objectFactory;
 
-    public void environmentServiceAction(String id, ServiceAction serviceAction) {
-        List<Environment> environments = getAll();
+    public void environmentServiceAction(String id, ServiceAction serviceAction, UUID connection) {
+        List<Environment> environments = getAll(connection);
         switch (serviceAction) {
             case Start:
                 for (Environment en :
@@ -69,6 +66,7 @@ public class EnvironmentService {
 
                     }
                 }
+                break;
             case Delete:
                 for (Environment en :
                         environments) {
@@ -86,14 +84,14 @@ public class EnvironmentService {
         }
     }
 
-    public Environment getEnvironmentByID(String id) {
+    public Environment getEnvironmentByID(String id, UUID connection) {
         try {
 
             dcService.getConnectionFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        List<Environment> environments = getAll();
+        List<Environment> environments = getAll(connection);
         Environment environment = new Environment();
         for (Environment en :
                 environments) {
@@ -111,8 +109,8 @@ public class EnvironmentService {
         return environment;
     }
 
-    public List<Environment> getAll() {
-        List<Container> containerList = dcService.getDefaultConnection().listContainersCmd().withShowAll(true).exec();
+    public List<Environment> getAll(UUID connection) {
+        List<Container> containerList = dcService.getConnection(connection).listContainersCmd().withShowAll(true).exec();
         Map<String, List<Container>> services = new HashMap<String, List<Container>>();
         List<Container> servicesContainers = containerList.stream().filter(line -> line.getLabels().containsKey(COMPOSE_PROJECT))
                 .collect(Collectors.toList());
