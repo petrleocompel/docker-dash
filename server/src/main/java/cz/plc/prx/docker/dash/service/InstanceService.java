@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InstanceService {
@@ -22,11 +23,14 @@ public class InstanceService {
 
     @Autowired
     ObjectFactory objectFactory;
+    private final String COMPOSE_PROJECT = "com.docker.compose.project";
 
     public List<Instance> getAll() {
-        List<Container> containerList = dcService.getDefaultConnection().listContainersCmd().exec();
-        System.out.println(containerList);
-        return objectFactory.convert(containerList, Instance.class);
+        List<Container> containerList = dcService.getDefaultConnection().listContainersCmd().withShowAll(true).exec();
+        List<Container> result = containerList.stream()
+                .filter(line -> !line.getLabels().containsKey(COMPOSE_PROJECT))
+                .collect(Collectors.toList());
+        return objectFactory.convert(result, Instance.class);
     }
 
     public List<InstanceExt> getByID(String Id) {

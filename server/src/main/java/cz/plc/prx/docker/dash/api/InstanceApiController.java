@@ -37,15 +37,12 @@ public class InstanceApiController implements InstanceApi {
     private InstanceService instanceService;
 
     public ResponseEntity<Void> instanceDelete(@ApiParam(value = "name of selected Instance", required = true) @PathVariable("id") String id) {
-        // do some magic!
         docker.getDefaultConnection().removeContainerCmd(id).exec();
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     public ResponseEntity<InstanceExt> instanceGet(@ApiParam(value = "name of selected Instance", required = true) @PathVariable("id") String id) {
-        // do some magic!
         List<InstanceExt> inst = instanceService.getByID(id);
-
         return new ResponseEntity<InstanceExt>(inst.get(0), HttpStatus.OK);
     }
 

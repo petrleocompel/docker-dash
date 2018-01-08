@@ -7,8 +7,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -35,6 +36,9 @@ public class Instance {
 
     @JsonProperty("status")
     private String status = null;
+
+    @JsonProperty("labels")
+    private Map<String, String> labels = null;
 
     public Instance id(String id) {
         this.id = id;
@@ -163,6 +167,35 @@ public class Instance {
         this.status = status;
     }
 
+    public Instance labels(Map<String, String> labels) {
+        this.labels = labels;
+        return this;
+    }
+
+    public Instance putLabelsItem(String key, String labelsItem) {
+        if (this.labels == null) {
+            this.labels = new HashMap<String, String>();
+        }
+        this.labels.put(key, labelsItem);
+        return this;
+    }
+
+    /**
+     * Get labels
+     *
+     * @return labels
+     **/
+    @ApiModelProperty(value = "")
+
+
+    public Map<String, String> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(Map<String, String> labels) {
+        this.labels = labels;
+    }
+
 
     @Override
     public boolean equals(java.lang.Object o) {
@@ -178,12 +211,13 @@ public class Instance {
                 Objects.equals(this.image, instance.image) &&
                 Objects.equals(this.name, instance.name) &&
                 Objects.equals(this.imageId, instance.imageId) &&
-                Objects.equals(this.status, instance.status);
+                Objects.equals(this.status, instance.status) &&
+                Objects.equals(this.labels, instance.labels);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, created, image, name, imageId, status);
+        return Objects.hash(id, created, image, name, imageId, status, labels);
     }
 
     @Override
@@ -197,6 +231,7 @@ public class Instance {
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    imageId: ").append(toIndentedString(imageId)).append("\n");
         sb.append("    status: ").append(toIndentedString(status)).append("\n");
+        sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
         sb.append("}");
         return sb.toString();
     }

@@ -18,7 +18,7 @@ public class Environment {
     private List<Instance> services = null;
 
     public Environment services(List<Instance> services) {
-        this.services = services;
+        this.services = (List<Instance>) services;
         return this;
     }
 
@@ -40,11 +40,11 @@ public class Environment {
     @Valid
 
     public List<Instance> getServices() {
-        return services;
+        return (List<Instance>) services;
     }
 
     public void setServices(List<Instance> services) {
-        this.services = services;
+        this.services = (List<Instance>) services;
     }
 
 
