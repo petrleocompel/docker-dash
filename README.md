@@ -1,3 +1,7 @@
+# Archived
+> Software is not more in development. Students made basic functionality and passed software to company for internal usage.
+
+
 # docker-dash
 
  - Java server
